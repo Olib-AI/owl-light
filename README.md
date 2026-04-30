@@ -34,7 +34,7 @@ It speaks vanilla CDP. Your existing `connect_over_cdp(...)` /
 
 ```bash
 # 1. download for your platform
-curl -fsSL https://owl-light.olib.ai/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 
 # 2. run
 owl-light --remote-debugging-port=9222 --owl-os=macos --owl-chrome-version=147
@@ -83,10 +83,10 @@ Pre-built binaries for:
 - **Linux arm64** — Ubuntu 22.04+ (~251 MB compressed)
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
-or via the [installer script](#quick-start).
-
-We also ship a multi-arch Docker image (`linux/amd64` + `linux/arm64`) — see
-[Docker usage](docs/docker.md).
+or via the [installer script](#quick-start). The Linux tarballs are plain
+Ubuntu binaries — extract and run, no container required. If you do want
+to run it inside a container, [docs/docker.md](docs/docker.md) shows how
+to build a thin image around the tarball yourself.
 
 ---
 
@@ -95,19 +95,11 @@ We also ship a multi-arch Docker image (`linux/amd64` + `linux/arm64`) — see
 ### One-liner installer (macOS / Linux)
 
 ```bash
-curl -fsSL https://owl-light.olib.ai/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
 The script auto-detects your OS + arch, downloads the latest release tarball,
 extracts to `~/.owl-light/`, and adds `owl-light` to `PATH`.
-
-### Docker
-
-```bash
-docker run --rm -p 9222:9222 \
-  ghcr.io/olib-ai/owl-light:latest \
-  --owl-os=macos --owl-chrome-version=147
-```
 
 ### Manual
 

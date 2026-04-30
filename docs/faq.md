@@ -71,11 +71,10 @@ if you need it on Owl Light specifically.
 Re-run the installer:
 
 ```bash
-curl -fsSL https://owl-light.olib.ai/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
-It overwrites the install in place. Or, with Docker, `docker pull
-ghcr.io/olib-ai/owl-light:latest`.
+It overwrites the install in place.
 
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 

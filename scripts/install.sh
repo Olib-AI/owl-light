@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # =============================================================================
-# Owl Light installer — one-liner: curl -fsSL https://owl-light.olib.ai/install.sh | sh
+# Owl Light installer — one-liner: curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 # =============================================================================
 # Detects OS + arch, downloads the latest Owl Light release tarball from
 # GitHub, extracts to ~/.owl-light/, and adds the binary to PATH via a shim

@@ -18,7 +18,7 @@ you need it.
 ## Method 1 — installer script (recommended)
 
 ```bash
-curl -fsSL https://owl-light.olib.ai/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
 What it does:
@@ -33,7 +33,7 @@ What it does:
 Pin to a version:
 
 ```bash
-OWL_LIGHT_VERSION=v0.1.0 curl -fsSL https://owl-light.olib.ai/install.sh | sh
+OWL_LIGHT_VERSION=v0.1.0 curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
 Customize the install location:
@@ -41,7 +41,7 @@ Customize the install location:
 ```bash
 OWL_LIGHT_HOME=/opt/owl-light \
 OWL_LIGHT_BIN_DIR=/usr/local/bin \
-  curl -fsSL https://owl-light.olib.ai/install.sh | sudo sh
+  curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sudo sh
 ```
 
 ---
@@ -69,16 +69,12 @@ open owl_light.app             # GUI launcher
 
 ---
 
-## Method 3 — Docker
+## Method 3 — Inside a container
 
-```bash
-docker run --rm -p 9222:9222 \
-  ghcr.io/olib-ai/owl-light:latest \
-  --owl-os=macos --owl-chrome-version=147
-```
-
-Multi-arch (`linux/amd64` + `linux/arm64`) image. See [docker.md](docker.md)
-for the full reference.
+We don't currently publish a Docker image. The Linux tarballs are plain
+Ubuntu 22.04+ binaries; if you need to run it in a container, drop the
+tarball into your own ~30-line Dockerfile. See [docker.md](docker.md)
+for a copy-paste example.
 
 ---
 
