@@ -80,14 +80,19 @@
       .nav-links { display: flex; gap: 22px; align-items: center; }
       .nav-links a { color: var(--fg-muted); font-size: 14px; }
       .nav-links a:hover { color: var(--primary); text-decoration: none; }
-      .btn {
+      .btn,
+      .nav-links a.btn {
         display: inline-block; padding: 12px 22px; border-radius: 8px;
         font-weight: 600; font-size: 15px; transition: all .15s;
       }
-      .btn-primary { background: var(--primary); color: white; }
-      .btn-primary:hover { background: var(--primary-dark); text-decoration: none; transform: translateY(-1px); }
-      .btn-ghost { color: var(--fg); border: 1px solid var(--border); }
-      .btn-ghost:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+      .btn-primary,
+      .nav-links a.btn-primary { background: var(--primary); color: #ffffff !important; }
+      .btn-primary:hover,
+      .nav-links a.btn-primary:hover { background: var(--primary-dark); color: #ffffff !important; text-decoration: none; transform: translateY(-1px); }
+      .btn-ghost,
+      .nav-links a.btn-ghost { color: var(--fg); border: 1px solid var(--border); background: transparent; }
+      .btn-ghost:hover,
+      .nav-links a.btn-ghost:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
 
       .hero { padding: 80px 0 60px; text-align: center; position: relative; overflow: hidden; }
       .hero .owl { width: 200px; height: auto; margin-bottom: 16px; }
@@ -143,8 +148,8 @@
       }
       .enterprise-cta h2 { color: white; margin-top: 0; }
       .enterprise-cta p { font-size: 1.05rem; opacity: .92; max-width: 560px; margin: 12px auto; }
-      .enterprise-cta .btn { background: white; color: var(--primary); margin-top: 14px; }
-      .enterprise-cta .btn:hover { background: #f0f7f3; }
+      .enterprise-cta .btn { background: white; color: var(--primary) !important; margin-top: 14px; }
+      .enterprise-cta .btn:hover { background: #f0f7f3; color: var(--primary-dark) !important; }
 
       footer { padding: 40px 0; border-top: 1px solid var(--border); margin-top: 60px; color: var(--fg-muted); font-size: .9rem; }
       footer a { color: var(--fg-muted); }
