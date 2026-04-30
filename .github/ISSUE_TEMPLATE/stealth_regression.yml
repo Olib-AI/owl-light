@@ -1,0 +1,78 @@
+name: Stealth regression
+description: A site or fingerprinting tool detected the browser as non-genuine
+title: "[stealth] "
+labels: ["stealth", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Owl Light should score **zero lies** on
+        [creepjs](https://abrahamjuliot.github.io/creepjs/) for all three OS
+        profiles. If you found a lie or a site is detecting the browser, this
+        is the right template.
+
+  - type: input
+    id: version
+    attributes:
+      label: Owl Light version
+      placeholder: "e.g. 0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: profile
+    attributes:
+      label: OS profile flag
+      options:
+        - macos
+        - windows
+        - linux
+    validations:
+      required: true
+
+  - type: input
+    id: chrome
+    attributes:
+      label: Chrome version flag
+      placeholder: "e.g. 147"
+    validations:
+      required: true
+
+  - type: input
+    id: site
+    attributes:
+      label: Detection site / tool
+      placeholder: "e.g. https://abrahamjuliot.github.io/creepjs/, https://fingerprint.com/demo/, recaptcha v3 on antcpt.com"
+    validations:
+      required: true
+
+  - type: textarea
+    id: lie
+    attributes:
+      label: The lie / detection signal
+      description: |
+        For creepjs: paste the lie key from the `workerScope` console output
+        (search the page console for a log entry containing both
+        `workerScope` and `totalLies`).
+
+        For other tools: a screenshot of the offending field is fine.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Reproducer
+      description: Smallest Playwright/Puppeteer script that triggers the detection
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: |
+        Was this working before? Did a recent release break it?
+        Browser console logs, network logs, etc.

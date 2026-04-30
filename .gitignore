@@ -1,0 +1,20 @@
+# Examples — local install artefacts
+examples/*/node_modules/
+examples/*/package-lock.json
+examples/*/.venv/
+examples/*/__pycache__/
+examples/*/screenshots/
+examples/*/downloads/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local builds (the binary is downloaded by scripts/install.sh, never committed)
+dist/
+*.tar.gz
+owl_light
+owl_light.app/

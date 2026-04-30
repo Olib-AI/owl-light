@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Owl Light — A drop-in stealth Chromium for Playwright & Puppeteer</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96x96.png" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+    <meta name="description" content="Owl Light is a single-binary Chromium with hardware-level fingerprint virtualization compiled into the engine. Drop-in replacement for Chromium under Playwright or Puppeteer. macOS arm64, Linux amd64/arm64. MIT-licensed wrapper." />
+    <meta name="keywords" content="stealth browser, anti-detect, fingerprint spoofing, playwright stealth, puppeteer stealth, undetected chromium, owl browser, owl light" />
+    <meta name="author" content="Olib AI" />
+    <link rel="canonical" href="https://www.owlbrowser.net/light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Owl Light — A drop-in stealth Chromium for Playwright & Puppeteer" />
+    <meta property="og:description" content="Real spoofing, baked at the source. Zero lies on creepJS across macOS, Windows, and Linux profiles. MIT, free." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/Olib-AI/owl-light/main/web/assets/owl-stealth.svg" />
+    <meta property="og:url" content="https://www.owlbrowser.net/light" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@olibaicom" />
+    <meta name="twitter:title" content="Owl Light — A drop-in stealth Chromium for Playwright & Puppeteer" />
+    <meta name="twitter:description" content="Real spoofing, baked at the source. Zero lies on creepJS across macOS, Windows, and Linux profiles." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Olib-AI/owl-light/main/web/assets/owl-stealth.svg" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Owl Light",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS, Linux",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@type": "Organization", "name": "Olib AI", "url": "https://www.owlbrowser.net" }
+    }
+    </script>
+
+    <style>
+      :root {
+        --primary: #4E9179;
+        --primary-dark: #3d7560;
+        --secondary: #9EBE8F;
+        --bg: #fafaf6;
+        --fg: #1f2620;
+        --fg-muted: #5a6b62;
+        --card: #ffffff;
+        --border: #e6e7df;
+        --code-bg: #1c211e;
+        --code-fg: #e8eee9;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--fg);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--primary); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      h1, h2, h3 { line-height: 1.2; margin: 0 0 .4em; letter-spacing: -0.02em; }
+      h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; }
+      h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; margin-top: 2.5em; }
+      h3 { font-size: 1.2rem; font-weight: 600; margin-top: 2em; }
+      .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+      .nav {
+        position: sticky; top: 0; z-index: 10;
+        background: rgba(250,250,246,.85); backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 1080px; margin: 0 auto; }
+      .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--fg); }
+      .nav-brand img { width: 32px; height: 32px; }
+      .nav-links { display: flex; gap: 22px; align-items: center; }
+      .nav-links a { color: var(--fg-muted); font-size: 14px; }
+      .nav-links a:hover { color: var(--primary); text-decoration: none; }
+      .btn {
+        display: inline-block; padding: 12px 22px; border-radius: 8px;
+        font-weight: 600; font-size: 15px; transition: all .15s;
+      }
+      .btn-primary { background: var(--primary); color: white; }
+      .btn-primary:hover { background: var(--primary-dark); text-decoration: none; transform: translateY(-1px); }
+      .btn-ghost { color: var(--fg); border: 1px solid var(--border); }
+      .btn-ghost:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+
+      .hero { padding: 80px 0 60px; text-align: center; position: relative; overflow: hidden; }
+      .hero .owl { width: 200px; height: auto; margin-bottom: 16px; }
+      .hero p.lede { font-size: 1.3rem; color: var(--fg-muted); max-width: 620px; margin: 0 auto 28px; }
+      .hero .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+      .hero-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; opacity: .85; }
+      .hero-badges img { height: 22px; }
+
+      .section { padding: 50px 0; }
+      .section.alt { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+      pre.code {
+        background: var(--code-bg); color: var(--code-fg);
+        padding: 18px 22px; border-radius: 10px;
+        font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+        font-size: 14px; line-height: 1.55; overflow-x: auto;
+        margin: 18px 0;
+      }
+      .code .c   { color: #98a59b; }     /* comment */
+      .code .k   { color: #c9a76d; }     /* keyword */
+      .code .s   { color: #b3d4a3; }     /* string */
+      .code .n   { color: #f0e2c0; }     /* name */
+      .grid { display: grid; gap: 24px; }
+      .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .card {
+        background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+        padding: 24px; transition: border-color .15s, transform .15s;
+      }
+      .card:hover { border-color: var(--secondary); transform: translateY(-2px); }
+      .card h3 { margin-top: 0; }
+      .card p { margin: 8px 0 0; color: var(--fg-muted); font-size: .95rem; }
+
+      table.compare {
+        width: 100%; border-collapse: collapse; margin: 24px 0;
+        background: var(--card); border-radius: 12px; overflow: hidden;
+        border: 1px solid var(--border); font-size: .95rem;
+      }
+      table.compare th, table.compare td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+      table.compare th { background: var(--bg); font-weight: 600; }
+      table.compare tr:last-child td { border-bottom: none; }
+      table.compare td:first-child { font-weight: 600; color: var(--fg); }
+      .y { color: var(--primary); font-weight: 700; }
+      .n { color: #b8463b; }
+
+      .screenshots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin: 28px 0; }
+      .screenshots figure { margin: 0; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+      .screenshots img { width: 100%; height: auto; display: block; }
+      .screenshots figcaption { padding: 12px 16px; font-size: .85rem; color: var(--fg-muted); }
+
+      .enterprise-cta {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white; border-radius: 16px; padding: 48px 36px; text-align: center; margin: 48px 0;
+      }
+      .enterprise-cta h2 { color: white; margin-top: 0; }
+      .enterprise-cta p { font-size: 1.05rem; opacity: .92; max-width: 560px; margin: 12px auto; }
+      .enterprise-cta .btn { background: white; color: var(--primary); margin-top: 14px; }
+      .enterprise-cta .btn:hover { background: #f0f7f3; }
+
+      footer { padding: 40px 0; border-top: 1px solid var(--border); margin-top: 60px; color: var(--fg-muted); font-size: .9rem; }
+      footer a { color: var(--fg-muted); }
+      .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+      @media (max-width: 640px) {
+        .nav-links { gap: 12px; }
+        .nav-links a:not(.btn) { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" href="#top">
+          <img src="assets/owl-logo.svg" alt="" />
+          <span>Owl Light</span>
+        </a>
+        <div class="nav-links">
+          <a href="#how">How it works</a>
+          <a href="#install">Install</a>
+          <a href="#examples">Examples</a>
+          <a href="#enterprise">Enterprise</a>
+          <a class="btn btn-primary" href="https://github.com/Olib-AI/owl-light/releases/latest">Download</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="container">
+          <img class="owl" src="assets/owl-stealth.svg" alt="Owl Light mascot" />
+          <h1>A drop-in stealth Chromium<br/>for Playwright &amp; Puppeteer</h1>
+          <p class="lede">No proxies. No JavaScript injection. Real fingerprint virtualization, baked at the source.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://github.com/Olib-AI/owl-light/releases/latest">Download for macOS / Linux</a>
+            <a class="btn btn-ghost" href="https://github.com/Olib-AI/owl-light#quick-start">Read the quick start →</a>
+          </div>
+          <div class="hero-badges">
+            <img src="https://img.shields.io/github/v/release/Olib-AI/owl-light?label=release&color=4E9179&style=flat-square" alt="release" />
+            <img src="https://img.shields.io/badge/platforms-macOS%20arm64%20%7C%20Linux%20amd64%20%7C%20Linux%20arm64-4E9179?style=flat-square" alt="platforms" />
+            <img src="https://img.shields.io/badge/license-MIT-9EBE8F?style=flat-square" alt="MIT" />
+            <img src="https://img.shields.io/badge/creepJS-0%20lies-4E9179?style=flat-square" alt="zero lies on creepjs" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="how">
+        <div class="container">
+          <h2>How it's different</h2>
+          <p>Most "stealth" plugins inject JavaScript on top of plain Chromium and override <code>navigator.webdriver</code>, <code>screen.width</code>, etc. <strong>Detection systems read those right back through the prototype chain</strong> — and the JavaScript itself is detectable. Owl Light removes that whole layer:</p>
+          <div class="grid cols-3" style="margin-top: 28px;">
+            <div class="card">
+              <h3>🔧 Compiled-in spoofing</h3>
+              <p>Patched Blink/V8 hooks for screen, navigator, canvas, WebGL, audio, fonts, timing, and Sec-CH-UA. Pages see authentic values from the real Blink code paths — there's no JavaScript layer to detect.</p>
+            </div>
+            <div class="card">
+              <h3>🦉 5 real-world VM profiles</h3>
+              <p>Each binary ships with macOS, Windows, and Linux profile sets covering recent hardware: M3-class Macs, AMD/Nvidia/Intel GPUs, and Linux distros — selected at launch via <code>--owl-os</code>.</p>
+            </div>
+            <div class="card">
+              <h3>🛡️ Zero lies on creepJS</h3>
+              <p>The <code>workerScope.totalLies</code> counter is 0 across all three OS profiles. <code>navigator.webdriver</code>, headless flags, and CDP artefacts are all neutralised at the source.</p>
+            </div>
+            <div class="card">
+              <h3>⚡ Drop-in replacement</h3>
+              <p>Pass the binary as <code>executablePath</code> in Playwright or Puppeteer launch options. No SDK, no dependency, no proxy — just point and run.</p>
+            </div>
+            <div class="card">
+              <h3>🍎 Notarized for macOS</h3>
+              <p>Signed with our Apple Developer ID and notarized with Apple's notary service. Gatekeeper accepts the binary without a manual override.</p>
+            </div>
+            <div class="card">
+              <h3>📦 Self-contained</h3>
+              <p>One tarball, ~230 MB. No installer, no dependencies, no system fonts required — bundles its own. Works in Docker out of the box.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="install">
+        <div class="container">
+          <h2>Install</h2>
+          <p>Single command on macOS or Linux. The script auto-detects your platform and drops the binary in <code>./bin/owl_light</code>.</p>
+<pre class="code"><span class="c"># macOS (Apple Silicon) or Linux (amd64/arm64):</span>
+<span class="k">curl</span> -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | <span class="k">bash</span>
+
+<span class="c"># Or download manually:</span>
+<span class="k">curl</span> -L -o owl_light.tar.gz \
+  https://github.com/Olib-AI/owl-light/releases/latest/download/owl_light-macos-arm64.tar.gz
+<span class="k">tar</span> -xzf owl_light.tar.gz</pre>
+        </div>
+      </section>
+
+      <section class="section alt" id="examples">
+        <div class="container">
+          <h2>Use it from Playwright</h2>
+<pre class="code"><span class="k">import</span> { chromium } <span class="k">from</span> <span class="s">'playwright'</span>;
+
+<span class="k">const</span> browser = <span class="k">await</span> chromium.launchPersistentContext(<span class="s">''</span>, {
+  executablePath: <span class="s">'./bin/owl_light'</span>,
+  headless: <span class="k">false</span>,
+  args: [<span class="s">'--owl-os=macos'</span>, <span class="s">'--owl-chrome-version=147'</span>],
+});
+
+<span class="k">const</span> page = browser.pages()[<span class="n">0</span>];
+<span class="k">await</span> page.<span class="n">goto</span>(<span class="s">'https://abrahamjuliot.github.io/creepjs/'</span>);
+<span class="c">// Open the page console — workerScope.totalLies = 0 ✓</span></pre>
+          <p style="margin-top: 18px">Or from Python with Playwright:</p>
+<pre class="code"><span class="k">from</span> playwright.async_api <span class="k">import</span> async_playwright
+
+<span class="k">async with</span> async_playwright() <span class="k">as</span> p:
+    browser = <span class="k">await</span> p.chromium.<span class="n">launch_persistent_context</span>(
+        user_data_dir=<span class="s">""</span>,
+        executable_path=<span class="s">"./bin/owl_light"</span>,
+        headless=<span class="k">False</span>,
+        args=[<span class="s">"--owl-os=windows"</span>, <span class="s">"--owl-chrome-version=147"</span>],
+    )</pre>
+          <p style="margin-top: 24px">More recipes in <a href="https://github.com/Olib-AI/owl-light/tree/main/examples">examples/</a> — basic navigation, form login, multi-window, network interception, screenshot capture.</p>
+        </div>
+      </section>
+
+      <section class="section" id="proof">
+        <div class="container">
+          <h2>Verified across all three OS profiles</h2>
+          <p>creepJS audit, fresh from the latest release:</p>
+          <div class="screenshots">
+            <figure>
+              <img src="assets/screenshots/creepjs-macos.png" alt="creepJS run with --owl-os=macos showing zero lies" loading="lazy" />
+              <figcaption><code>--owl-os=macos</code> · <code>workerScope.totalLies = 0</code></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/screenshots/creepjs-windows.png" alt="creepJS run with --owl-os=windows showing zero lies" loading="lazy" />
+              <figcaption><code>--owl-os=windows</code> · <code>workerScope.totalLies = 0</code></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/screenshots/creepjs-linux.png" alt="creepJS run with --owl-os=linux showing zero lies" loading="lazy" />
+              <figcaption><code>--owl-os=linux</code> · <code>workerScope.totalLies = 0</code></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="vs-enterprise">
+        <div class="container">
+          <h2>Owl Light vs. Owl Browser (Enterprise)</h2>
+          <table class="compare">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Owl Light · MIT</th>
+                <th>Owl Browser · Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Source-level fingerprint spoofing</td><td class="y">✓</td><td class="y">✓</td></tr>
+              <tr><td>Drop-in for Playwright / Puppeteer</td><td class="y">✓</td><td class="y">✓</td></tr>
+              <tr><td>Zero-lies on creepJS</td><td class="y">✓</td><td class="y">✓</td></tr>
+              <tr><td>5 VM profiles per OS</td><td class="y">✓</td><td>500+</td></tr>
+              <tr><td>REST API + WebSocket + MCP</td><td class="n">—</td><td class="y">170+ tools</td></tr>
+              <tr><td>Built-in vision LLM (Qwen3-VL-2B)</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>Natural-language automation (NLA)</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>CAPTCHA solving (text / image / puzzle)</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>Video recording + live MJPEG stream</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>TOR integration</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>256 isolated parallel sessions / instance</td><td class="n">—</td><td class="y">✓</td></tr>
+              <tr><td>Docker image + React control panel</td><td>basic</td><td class="y">full</td></tr>
+              <tr><td>SOC2-ready deployment</td><td class="n">—</td><td class="y">✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="enterprise">
+        <div class="container">
+          <div class="enterprise-cta">
+            <h2>Need more than a binary?</h2>
+            <p>Owl Browser is the full enterprise platform — REST API, WebSocket, MCP server, vision LLM, NLA, CAPTCHA solving, video recording, TOR integration, and 256 isolated sessions per instance.</p>
+            <p>Self-hosted, SOC2-ready, with SLAs.</p>
+            <a class="btn" href="https://www.owlbrowser.net">Visit owlbrowser.net →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-row">
+          <div>© 2026 Olib AI LLC · Owl Light is MIT-licensed.</div>
+          <div>
+            <a href="https://github.com/Olib-AI/owl-light">GitHub</a> ·
+            <a href="https://www.owlbrowser.net">owlbrowser.net</a> ·
+            <a href="mailto:sales@olib.ai">sales@olib.ai</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

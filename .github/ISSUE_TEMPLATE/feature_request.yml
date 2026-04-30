@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest a new flag, example, doc page, or platform target
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: check the [Enterprise comparison](https://github.com/Olib-AI/owl-light#enterprise) — features like REST API, MCP server, vision LLM, NLA, video recording, TOR integration, and 256 isolated contexts already exist in the Enterprise build.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: A real automation use case, not a hypothetical
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would the feature look like?
+      description: New CLI flag, new example, new docs page, new platform target, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: e.g. "I tried doing X with Playwright's built-in API and it didn't work because Y"
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else

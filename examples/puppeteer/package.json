@@ -1,0 +1,14 @@
+{
+  "name": "owl-light-puppeteer-examples",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "basic": "node 01_basic.mjs",
+    "screenshot": "node 02_screenshot.mjs",
+    "login": "node 03_form_login.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^25.0.0"
+  }
+}

@@ -1,0 +1,80 @@
+name: Bug report
+description: Something is broken — the binary crashes, an example doesn't work, the installer fails
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing! Please fill in everything you can — guesses are fine for fields you're unsure about.
+
+  - type: input
+    id: version
+    attributes:
+      label: Owl Light version
+      description: Output of `./owl_light --version`
+      placeholder: "e.g. 0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS arm64 (Apple Silicon)
+        - Linux amd64
+        - Linux arm64 (Docker)
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: profile
+    attributes:
+      label: OS profile flag
+      description: What did you pass to `--owl-os=`?
+      options:
+        - macos
+        - windows
+        - linux
+        - (not set / default)
+    validations:
+      required: true
+
+  - type: input
+    id: chrome
+    attributes:
+      label: Chrome version flag
+      description: What did you pass to `--owl-chrome-version=`?
+      placeholder: "e.g. 147"
+
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Reproducer
+      description: Smallest script (Playwright, Puppeteer, or shell) that triggers the bug. Include the URL of the site if relevant.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+      description: Error message, stack trace, screenshot, or "the page just hangs"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Logs, network captures, related issues, etc.

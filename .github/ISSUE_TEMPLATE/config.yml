@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Enterprise sales / support
+    url: mailto:sales@olib.ai
+    about: Pricing, SLAs, on-prem deployment, the full Owl Browser (vision LLM, NLA, MCP, REST API, video recording, TOR integration)
+  - name: Security vulnerability
+    url: https://github.com/Olib-AI/owl-light/blob/main/SECURITY.md
+    about: Use security@olib.ai — please don't open a public issue for stealth bypasses or sandbox escapes
+  - name: General questions
+    url: https://www.owlbrowser.net
+    about: Product overview, comparison with Enterprise, feature roadmap
