@@ -7,7 +7,7 @@
   No proxies. No JavaScript injection. Real spoofing, baked at the source.
 
   [![Latest release](https://img.shields.io/github/v/release/Olib-AI/owl-light?label=download&style=flat-square&color=4E9179)](https://github.com/Olib-AI/owl-light/releases/latest)
-  [![Platforms](https://img.shields.io/badge/platforms-macOS%20arm64%20%7C%20Linux%20amd64%20%7C%20Linux%20arm64-4E9179?style=flat-square)](https://github.com/Olib-AI/owl-light/releases)
+  [![Platforms](https://img.shields.io/badge/platforms-macOS%20arm64%20%7C%20Linux%20amd64%20%7C%20Linux%20arm64%20%7C%20Windows%20amd64-4E9179?style=flat-square)](https://github.com/Olib-AI/owl-light/releases)
   [![License](https://img.shields.io/badge/license-MIT-9EBE8F?style=flat-square)](LICENSE)
   [![Docs](https://img.shields.io/badge/docs-owlbrowser.net-4E9179?style=flat-square)](https://www.owlbrowser.net)
 
@@ -81,12 +81,15 @@ Pre-built binaries for:
 - **macOS arm64** — Apple Silicon (`.app` bundle, ~232 MB compressed)
 - **Linux amd64** — Ubuntu 22.04+ (~253 MB compressed)
 - **Linux arm64** — Ubuntu 22.04+ (~251 MB compressed)
+- **Windows amd64** — Windows 10/11 (`.zip`, ~188 MB compressed)
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
 or via the [installer script](#quick-start). The Linux tarballs are plain
 Ubuntu binaries — extract and run, no container required. If you do want
 to run it inside a container, [docs/docker.md](docs/docker.md) shows how
-to build a thin image around the tarball yourself.
+to build a thin image around the tarball yourself. The Windows zip ships
+a portable `owl_light.exe` plus the CEF runtime DLLs alongside it; no
+installer or admin rights required.
 
 ---
 
@@ -101,14 +104,28 @@ curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/inst
 The script auto-detects your OS + arch, downloads the latest release tarball,
 extracts to `~/.owl-light/`, and adds `owl-light` to `PATH`.
 
+### One-liner installer (Windows)
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.ps1 | iex
+```
+
+PowerShell only — extracts to `%LOCALAPPDATA%\OwlLight\` and drops an
+`owl-light.cmd` shim under `%LOCALAPPDATA%\OwlLight\bin\`. No admin rights
+needed; the script prints how to add the bin dir to `PATH` for new shells.
+
 ### Manual
 
-1. Grab the right tarball from [Releases](https://github.com/Olib-AI/owl-light/releases/latest).
+1. Grab the right archive from [Releases](https://github.com/Olib-AI/owl-light/releases/latest).
 2. Extract it.
 3. Run the binary:
 
    - **macOS**: `owl_light-macos-arm64/owl_light.app/Contents/MacOS/owl_light --remote-debugging-port=9222`
    - **Linux**: `owl_light-linux-{amd64,arm64}/owl_light --remote-debugging-port=9222`
+   - **Windows**: from the extracted `owl_light-windows-amd64\` folder, run
+     `.\owl_light.exe --remote-debugging-port=9222`. PowerShell or `cmd`
+     both work; the exe must stay alongside `libcef.dll` and the rest of
+     the runtime files.
 
 ---
 
@@ -221,7 +238,7 @@ automation at scale:
 | | Owl Light | **Owl Browser Enterprise** |
 |---|---|---|
 | Stealth Chromium engine | ✓ | ✓ |
-| Platforms | macOS, Linux | macOS, Linux, Windows, Docker |
+| Platforms | macOS, Linux, Windows | macOS, Linux, Windows, Docker |
 | Fingerprint profiles | 15 bundled | 256 unique per instance, custom matrices |
 | Multi-context isolation | — | 256 isolated browser contexts per process |
 | Tor integration | — | Built-in, per-context circuits |
