@@ -264,5 +264,5 @@ automation at scale:
 - ✉️ [hello@olib.ai](mailto:hello@olib.ai)
 
 <div align="center" style="opacity: 0.6; margin-top: 2rem;">
-  <sub>Built by <a href="https://www.olib.ai">Olib AI</a> · Made with 🦉 in San Francisco</sub>
+  <sub>Built by <a href="https://www.olib.ai">Olib AI</a> · Made with 🦉 in Stone Mountain</sub>
 </div>
