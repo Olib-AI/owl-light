@@ -1,7 +1,7 @@
 # Fingerprint profiles
 
-Owl Light ships with **15 production-grade profiles** — 3 operating systems
-× 5 Chrome major versions. Each profile is a fully self-consistent
+Owl Light ships with **21 production-grade profiles** — 3 operating systems
+× 7 Chrome major versions. Each profile is a fully self-consistent
 identity: navigator object, Client Hints (`Sec-CH-UA-*`), Accept-Language,
 platform, GPU/WebGL renderer, canvas/audio noise seed, font list, screen
 metrics, devicePixelRatio, hardwareConcurrency, deviceMemory, and timezone
@@ -16,23 +16,29 @@ all match what a real machine of that build would produce.
 | `windows` | 145 | Windows 10/11 | Intel UHD / NVIDIA |
 | `windows` | 146 | Windows 10/11 | Intel UHD / NVIDIA |
 | `windows` | 147 | Windows 10/11 | Intel UHD / NVIDIA |
+| `windows` | 148 | Windows 10/11 | Intel UHD / NVIDIA |
+| `windows` | 149 | Windows 10/11 | Intel UHD / NVIDIA |
 | `macos`   | 143 | macOS 14+ | Apple M-series |
 | `macos`   | 144 | macOS 14+ | Apple M-series |
 | `macos`   | 145 | macOS 14+ | Apple M-series |
 | `macos`   | 146 | macOS 14+ | Apple M-series |
 | `macos`   | 147 | macOS 14+ | Apple M-series |
+| `macos`   | 148 | macOS 14+ | Apple M-series |
+| `macos`   | 149 | macOS 14+ | Apple M-series |
 | `linux`   | 143 | Linux x86_64 | Intel UHD / NVIDIA |
 | `linux`   | 144 | Linux x86_64 | Intel UHD / NVIDIA |
 | `linux`   | 145 | Linux x86_64 | Intel UHD / NVIDIA |
 | `linux`   | 146 | Linux x86_64 | Intel UHD / NVIDIA |
 | `linux`   | 147 | Linux x86_64 | Intel UHD / NVIDIA |
+| `linux`   | 148 | Linux x86_64 | Intel UHD / NVIDIA |
+| `linux`   | 149 | Linux x86_64 | Intel UHD / NVIDIA |
 
 The matrix is bundled into the binary itself (encrypted SQLCipher DB) — no
 network calls, no profile downloads, no telemetry.
 
 ## Pinning a profile
 
-By default Owl Light picks one of the 15 profiles at random per process
+By default Owl Light picks one of the 21 profiles at random per process
 launch. To pin to the same profile across runs:
 
 ```bash
@@ -94,7 +100,7 @@ serialization, and enumeration.
 
 ## Need more profiles?
 
-Owl Light's 15 bundled profiles are the public set. Owl Browser
+Owl Light's 21 bundled profiles are the public set. Owl Browser
 **Enterprise** ships **256 unique profiles per instance** plus a profile
 generator that synthesizes new identities from any Chrome major you point
 it at — see [Enterprise](enterprise.md).

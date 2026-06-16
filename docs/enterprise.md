@@ -13,8 +13,8 @@ automation at scale.
 | | Owl Light | **Owl Browser Enterprise** |
 |---|---|---|
 | Stealth Chromium engine | ✓ | ✓ (same engine, expanded profile pool) |
-| Platforms | macOS arm64, Linux amd64/arm64 | macOS, Linux, Windows, Docker (multi-arch) |
-| Bundled fingerprint profiles | 15 (3 OS × 5 Chrome versions) | 256 unique per instance, custom matrices, profile generator API |
+| Platforms | macOS arm64, Linux amd64/arm64, Windows amd64 | macOS, Linux, Windows, Docker (multi-arch) |
+| Bundled fingerprint profiles | 21 (3 OS × 7 Chrome versions) | 256 unique per instance, custom matrices, profile generator API |
 | Multi-context isolation | — | 256 isolated browser contexts per process, each with its own profile |
 | Concurrent sessions | One CDP client | 256+ parallel sessions, 64-socket parallel IPC |
 | Tor integration | — | Built-in, per-context circuits, NEW-NYM rotation |
