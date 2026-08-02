@@ -10,7 +10,7 @@ upstream Chromium catalogue (`--headless=new`, `--no-sandbox`,
 | Flag | Default | What it does |
 |---|---|---|
 | `--owl-os={windows\|macos\|linux}` | `linux` | Pick the spoofed operating system. Drives navigator.platform, navigator.userAgent, Sec-CH-UA-Platform, font list, screen DPI, and a dozen other coherent invariants. |
-| `--owl-chrome-version={143..149}` | `147` | Pick the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
+| `--owl-chrome-version={143..151}` | `147` | Pick the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
 | `--owl-vm-seed=<u64>` | (random per run) | Force a specific VM profile by seed. Use this when you need *the same* identity across runs (regression testing, account binding). |
 | `--owl-gpu-profile=<n>` | (auto from `--owl-os`) | Override the GPU virtualization slot. 0 = Intel UHD, 1 = NVIDIA, 2 = AMD, 3 = Apple M-series, 4 = Qualcomm Adreno. |
 

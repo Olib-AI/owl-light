@@ -45,20 +45,25 @@ serve many test runs.
 
 ### Is the binary signed / notarized on macOS?
 
-The macOS arm64 build is **adhoc-signed** but **not Apple-notarized**
-in early releases. Gatekeeper will block the first launch with a
-"can't verify the developer" warning. To get past it:
+Yes. The macOS arm64 build is signed with a **Developer ID Application**
+certificate (Olib AI LLC), **notarized by Apple, and stapled** — so it
+launches without a Gatekeeper prompt and works offline. Verify it yourself:
 
 ```bash
-# remove the quarantine attribute the browser/curl set
-xattr -dr com.apple.quarantine ~/.owl-light/owl_light.app
+spctl -a -vv /path/to/owl_light.app     # => source=Notarized Developer ID
+xcrun stapler validate /path/to/owl_light.app
 ```
 
-Or, in the GUI: right-click the `.app` → Open → "Open" again on the
-warning dialog. macOS only asks once per binary.
+If you ever do see a "can't verify the developer" warning, the download lost
+its stapled ticket (some tools strip extended attributes). Clear the quarantine
+flag and reopen:
 
-Apple notarization is on the roadmap and will land in a future release.
-Track [issue #1](https://github.com/Olib-AI/owl-light/issues/1).
+```bash
+xattr -dr com.apple.quarantine /path/to/owl_light.app
+```
+
+The **Windows** build is not yet signed with an EV code-signing certificate, so
+SmartScreen may warn on first run.
 
 ### Is there a Windows build?
 
@@ -79,7 +84,7 @@ It overwrites the install in place.
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 
 Owl Light is the open distribution of the stealth Chromium engine — one
-binary, drop-in CDP, 21 bundled fingerprint profiles. Owl Browser
+binary, drop-in CDP, 27 bundled fingerprint profiles. Owl Browser
 Enterprise adds the full automation platform on top: 256 isolated browser
 contexts per process, Tor integration, residential proxy management,
 175+ automation tools (REST + WebSocket + MCP), an on-device vision LLM
@@ -97,9 +102,9 @@ code drives.
 
 | Platform | Compressed | Uncompressed |
 |---|---|---|
-| macOS arm64  | ~232 MB | ~750 MB |
-| Linux amd64  | ~253 MB | ~770 MB |
-| Linux arm64  | ~251 MB | ~810 MB |
+| macOS arm64  | ~165 MB | ~750 MB |
+| Linux amd64  | ~198 MB | ~770 MB |
+| Linux arm64  | ~193 MB | ~810 MB |
 
 Most of the size is CEF / Chromium itself (libcef.so + V8 snapshot +
 Resources/) plus a small bundle of OSS fonts.

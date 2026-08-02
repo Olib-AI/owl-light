@@ -12,7 +12,7 @@ This page shows the minimal Dockerfile that wraps the official tarball.
 # syntax=docker/dockerfile:1
 FROM ubuntu:22.04 AS runtime
 
-ARG OWL_LIGHT_VERSION=v0.2.0
+ARG OWL_LIGHT_VERSION=v0.3.0
 ARG TARGETARCH      # amd64 | arm64 (set automatically by buildx)
 
 # CEF runtime deps + tini for clean PID 1
@@ -45,15 +45,15 @@ Build it:
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --build-arg OWL_LIGHT_VERSION=v0.2.0 \
-  -t my-org/owl-light:v0.2.0 \
+  --build-arg OWL_LIGHT_VERSION=v0.3.0 \
+  -t my-org/owl-light:v0.3.0 \
   --push .
 ```
 
 Run it:
 
 ```bash
-docker run --rm -p 9222:9222 my-org/owl-light:v0.2.0 \
+docker run --rm -p 9222:9222 my-org/owl-light:v0.3.0 \
   --owl-os=macos --owl-chrome-version=147
 ```
 
@@ -80,7 +80,7 @@ exits. To keep them, mount a volume:
 ```bash
 docker run --rm -p 9222:9222 \
   -v owl-light-data:/data \
-  my-org/owl-light:v0.2.0 \
+  my-org/owl-light:v0.3.0 \
   --user-data-dir=/data \
   --owl-os=macos --owl-chrome-version=147
 ```

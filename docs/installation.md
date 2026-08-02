@@ -36,7 +36,7 @@ What it does:
 Pin to a version:
 
 ```bash
-OWL_LIGHT_VERSION=v0.2.0 curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
+OWL_LIGHT_VERSION=v0.3.0 curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
 Customize the install location:
@@ -60,7 +60,7 @@ needed; the script prints how to add the bin dir to your user `PATH`.
 Pin a version or change the install dir:
 
 ```powershell
-$env:OWL_LIGHT_VERSION = 'v0.2.0'
+$env:OWL_LIGHT_VERSION = 'v0.3.0'
 $env:OWL_LIGHT_HOME    = 'C:\Tools\OwlLight'
 iwr -useb https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.ps1 | iex
 ```

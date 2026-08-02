@@ -65,7 +65,7 @@ already speak.
 
 | | Plain Chromium / Playwright | **Owl Light** |
 |---|---|---|
-| Fingerprint | Identical to every other Playwright user | 21 bundled VM profiles (Windows, macOS, Linux × Chrome 143–149), each with a fully self-consistent identity |
+| Fingerprint | Identical to every other Playwright user | 27 bundled VM profiles (Windows, macOS, Linux × Chrome 143–151), each with a fully self-consistent identity |
 | Detection by Cloudflare / DataDome / fingerprint.com | Frequently flagged as bot | Passes |
 | `navigator.webdriver` | `true` | `undefined` (and so is every other tell) |
 | GPU / canvas / WebGL | Real machine — leaks identity | Virtualized at the C++ source level |
@@ -78,9 +78,9 @@ already speak.
 
 Pre-built binaries for:
 
-- **macOS arm64** — Apple Silicon (`.app` bundle, ~232 MB compressed)
-- **Linux amd64** — Ubuntu 22.04+ (~253 MB compressed)
-- **Linux arm64** — Ubuntu 22.04+ (~251 MB compressed)
+- **macOS arm64** — Apple Silicon (`.app` bundle, ~165 MB compressed)
+- **Linux amd64** — Ubuntu 22.04+ (~198 MB compressed)
+- **Linux arm64** — Ubuntu 22.04+ (~193 MB compressed)
 - **Windows amd64** — Windows 10/11 (`.zip`, ~188 MB compressed)
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
@@ -157,12 +157,12 @@ asyncio.run(main())
 
 ## Profile selection
 
-Owl Light ships with **21 production-grade fingerprint profiles** —
+Owl Light ships with **27 production-grade fingerprint profiles** —
 3 operating systems × 7 Chrome versions:
 
 | `--owl-os=` | `--owl-chrome-version=` |
 |---|---|
-| `windows`, `macos`, `linux` | `143`, `144`, `145`, `146`, `147`, `148`, `149` |
+| `windows`, `macos`, `linux` | `143`, `144`, `145`, `146`, `147`, `148`, `149`, `150`, `151` |
 
 ```bash
 owl-light --remote-debugging-port=9222 --owl-os=linux --owl-chrome-version=145
@@ -204,7 +204,7 @@ Owl-specific knobs are:
 | Flag | What it does |
 |---|---|
 | `--owl-os={windows\|macos\|linux}` | Pick the spoofed operating system |
-| `--owl-chrome-version={143..149}` | Pick the spoofed Chrome major version |
+| `--owl-chrome-version={143..151}` | Pick the spoofed Chrome major version |
 | `--owl-vm-seed=<n>` | Force a specific VM profile (advanced) |
 | `--remote-debugging-port=<n>` | Standard CDP port (default: pipe-only) |
 
@@ -239,7 +239,7 @@ automation at scale:
 |---|---|---|
 | Stealth Chromium engine | ✓ | ✓ |
 | Platforms | macOS, Linux, Windows | macOS, Linux, Windows, Docker |
-| Fingerprint profiles | 21 bundled | 256 unique per instance, custom matrices |
+| Fingerprint profiles | 27 bundled | 256 unique per instance, custom matrices |
 | Multi-context isolation | — | 256 isolated browser contexts per process |
 | Tor integration | — | Built-in, per-context circuits |
 | Built-in proxy / residential routing | — | ✓ |
