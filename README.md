@@ -19,7 +19,7 @@
 ## What is Owl Light?
 
 Owl Light is a single binary you run instead of plain Chromium when you need
-to drive a real browser from **Playwright** or **Puppeteer** — but you want
+to drive a real browser from **Playwright** or **Puppeteer**, but you want
 the page to look like a regular user, not a headless bot.
 
 It's a custom Chromium build with hardware-level fingerprint virtualization
@@ -29,7 +29,7 @@ from the same Blink code paths as real ones, so JavaScript introspection,
 `toString()` checks, and prototype-chain audits all see authentic values.
 
 It speaks vanilla CDP. Your existing `connect_over_cdp(...)` /
-`puppeteer.connect({ browserURL })` code keeps working — point it at
+`puppeteer.connect({ browserURL })` code keeps working. Point it at
 `http://localhost:9222` and you're done.
 
 ```bash
@@ -56,7 +56,7 @@ async def main():
 asyncio.run(main())
 ```
 
-That's it. No SDK, no client library — just the Chrome DevTools Protocol you
+That's it. No SDK, no client library, just the Chrome DevTools Protocol you
 already speak.
 
 ---
@@ -65,10 +65,10 @@ already speak.
 
 | | Plain Chromium / Playwright | **Owl Light** |
 |---|---|---|
-| Fingerprint | Identical to every other Playwright user | 27 bundled VM profiles (Windows, macOS, Linux × Chrome 143–151), each with a fully self-consistent identity |
+| Fingerprint | Identical to every other Playwright user | 27 bundled VM profiles (Windows, macOS, Linux × Chrome 143-151), each with a fully self-consistent identity |
 | Detection by Cloudflare / DataDome / fingerprint.com | Frequently flagged as bot | Passes |
 | `navigator.webdriver` | `true` | `undefined` (and so is every other tell) |
-| GPU / canvas / WebGL | Real machine — leaks identity | Virtualized at the C++ source level |
+| GPU / canvas / WebGL | Real machine, leaks identity | Virtualized at the C++ source level |
 | Setup | Brittle stealth plugins, monkey-patched at runtime | One binary, zero JS injection |
 | Compatible with | Playwright, Puppeteer | **Same.** Drop-in, no API changes |
 
@@ -78,14 +78,14 @@ already speak.
 
 Pre-built binaries for:
 
-- **macOS arm64** — Apple Silicon (`.app` bundle, ~165 MB compressed)
-- **Linux amd64** — Ubuntu 22.04+ (~198 MB compressed)
-- **Linux arm64** — Ubuntu 22.04+ (~193 MB compressed)
-- **Windows amd64** — Windows 10/11 (`.zip`, ~188 MB compressed)
+- **macOS arm64**: Apple Silicon (`.app` bundle, ~165 MB compressed)
+- **Linux amd64**: Ubuntu 22.04+ (~198 MB compressed)
+- **Linux arm64**: Ubuntu 22.04+ (~193 MB compressed)
+- **Windows amd64**: Windows 10/11 (`.zip`, ~188 MB compressed)
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
 or via the [installer script](#quick-start). The Linux tarballs are plain
-Ubuntu binaries — extract and run, no container required. If you do want
+Ubuntu binaries: extract and run, no container required. If you do want
 to run it inside a container, [docs/docker.md](docs/docker.md) shows how
 to build a thin image around the tarball yourself. The Windows zip ships
 a portable `owl_light.exe` plus the CEF runtime DLLs alongside it; no
@@ -110,7 +110,7 @@ extracts to `~/.owl-light/`, and adds `owl-light` to `PATH`.
 iwr -useb https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.ps1 | iex
 ```
 
-PowerShell only — extracts to `%LOCALAPPDATA%\OwlLight\` and drops an
+PowerShell only. Extracts to `%LOCALAPPDATA%\OwlLight\` and drops an
 `owl-light.cmd` shim under `%LOCALAPPDATA%\OwlLight\bin\`. No admin rights
 needed; the script prints how to add the bin dir to `PATH` for new shells.
 
@@ -133,9 +133,9 @@ needed; the script prints how to add the bin dir to `PATH` for new shells.
 
 Working code in [`examples/`](examples/):
 
-- **[Playwright + Python](examples/playwright-python/)** — connect, fill a form, take a full-page screenshot, handle popups.
-- **[Playwright + Node.js](examples/playwright-node/)** — same flows in TypeScript-friendly JS.
-- **[Puppeteer](examples/puppeteer/)** — connect over CDP, use the standard Puppeteer API.
+- **[Playwright + Python](examples/playwright-python/)**: connect, fill a form, take a full-page screenshot, handle popups.
+- **[Playwright + Node.js](examples/playwright-node/)**: same flows in TypeScript-friendly JS.
+- **[Puppeteer](examples/puppeteer/)**: connect over CDP, use the standard Puppeteer API.
 
 ```python
 # examples/playwright-python/screenshot.py
@@ -157,8 +157,8 @@ asyncio.run(main())
 
 ## Profile selection
 
-Owl Light ships with **27 production-grade fingerprint profiles** —
-3 operating systems × 7 Chrome versions:
+Owl Light ships with **27 production-grade fingerprint profiles**:
+3 operating systems x 9 Chrome versions:
 
 | `--owl-os=` | `--owl-chrome-version=` |
 |---|---|
@@ -168,7 +168,7 @@ Owl Light ships with **27 production-grade fingerprint profiles** —
 owl-light --remote-debugging-port=9222 --owl-os=linux --owl-chrome-version=145
 ```
 
-Each profile is a fully self-consistent identity — UA, Sec-CH-UA-* hints,
+Each profile is a fully self-consistent identity: UA, Sec-CH-UA-* hints,
 GPU/WebGL renderer, canvas/audio noise seed, font list, screen metrics, and
 timezone are all coherent for that OS/version combination.
 
@@ -198,7 +198,7 @@ in the source repo and is run on every release.
 
 ## Browser flags
 
-Owl Light is a Chromium fork — **all standard Chromium flags work**. The
+Owl Light is a Chromium fork, so **all standard Chromium flags work**. The
 Owl-specific knobs are:
 
 | Flag | What it does |
@@ -215,7 +215,7 @@ Defaults to `linux` + `chrome 147` if not specified. See
 
 ## License
 
-Owl Light binaries are distributed under the **MIT License** — see
+Owl Light binaries are distributed under the **MIT License**. See
 [LICENSE](LICENSE). The source code is proprietary to Olib AI and is not
 included in this repository.
 
@@ -240,15 +240,15 @@ automation at scale:
 | Stealth Chromium engine | ✓ | ✓ |
 | Platforms | macOS, Linux, Windows | macOS, Linux, Windows, Docker |
 | Fingerprint profiles | 27 bundled | 256 unique per instance, custom matrices |
-| Multi-context isolation | — | 256 isolated browser contexts per process |
-| Tor integration | — | Built-in, per-context circuits |
-| Built-in proxy / residential routing | — | ✓ |
-| 175+ automation tools (REST + WebSocket + MCP) | — | ✓ |
-| Vision LLM (page understanding, NLA, CAPTCHA) | — | ✓ — on-device, Qwen3-VL-2B |
-| Video recording, live streaming, frame capture | — | ✓ |
-| 64-socket parallel IPC | — | ✓ |
-| React control panel + REST API | — | ✓ |
-| Audit logging, SOC2 hardening, RS256 license | — | ✓ |
+| Multi-context isolation | ✗ | 256 isolated browser contexts per process |
+| Tor integration | ✗ | Built-in, per-context circuits |
+| Built-in proxy / residential routing | ✗ | ✓ |
+| 175+ automation tools (REST + WebSocket + MCP) | ✗ | ✓ |
+| Vision LLM (page understanding, NLA, CAPTCHA) | ✗ | ✓ on-device, Qwen3-VL-2B |
+| Video recording, live streaming, frame capture | ✗ | ✓ |
+| 64-socket parallel IPC | ✗ | ✓ |
+| React control panel + REST API | ✗ | ✓ |
+| Audit logging, SOC2 hardening, RS256 license | ✗ | ✓ |
 | Support | Community | Dedicated SLA, private Slack |
 
 [**Talk to us →**](https://www.owlbrowser.net) · [sales@olib.ai](mailto:sales@olib.ai)
@@ -257,10 +257,10 @@ automation at scale:
 
 ## Links
 
-- 🌐 [owlbrowser.net](https://www.owlbrowser.net) — product site
-- 📚 [docs/](docs/) — install, flags, profiles, FAQ
-- 💡 [examples/](examples/) — runnable Playwright + Puppeteer samples
-- 🐛 [Issues](https://github.com/Olib-AI/owl-light/issues) — bugs & feature requests
+- 🌐 [owlbrowser.net](https://www.owlbrowser.net): product site
+- 📚 [docs/](docs/): install, flags, profiles, FAQ
+- 💡 [examples/](examples/): runnable Playwright + Puppeteer samples
+- 🐛 [Issues](https://github.com/Olib-AI/owl-light/issues): bugs & feature requests
 - ✉️ [hello@olib.ai](mailto:hello@olib.ai)
 
 <div align="center" style="opacity: 0.6; margin-top: 2rem;">
