@@ -1,39 +1,61 @@
 # Security policy
 
-## Reporting a vulnerability
+## What this repository covers
 
-Email **security@olib.ai** with:
+Owl Light is a free, publicly available browser binary. It is a separate product
+from Owl Browser Enterprise and it does not share the Enterprise codebase,
+stealth engine, or hardening work.
 
-- A short description of the issue
-- A reproducer (HTML page, script, network capture, etc.)
-- Your platform (`uname -a` + `owl_light --version`)
-- Whether the issue affects Owl Light, the Enterprise build, or both
+**Owl Light is not covered by the Owl Browser bug bounty programme, and reports
+about it are not eligible for a bounty, a severity rating, or a coordinated
+disclosure timeline.** The bounty applies to the Enterprise product only.
 
-We acknowledge reports within 2 business days and aim to ship a fix within 14
-days for confirmed high-severity issues.
+Please do not send Owl Light findings to the enterprise security channel. They
+will be closed without assessment.
 
-Do **not** file a public GitHub issue for security reports.
+## Reporting an issue in Owl Light
 
-## Scope
+Security issues in Owl Light are handled on a best effort basis through the
+public issue tracker of this repository. Open a regular GitHub issue with:
 
-In scope:
+- A short description of the behaviour
+- A reproducer (HTML page, script, or network capture)
+- Your platform (`uname -a` and `owl_light --version`)
 
-- Stealth bypasses — anything that lets a remote site reliably fingerprint the
-  binary as Owl Light or as a non-genuine Chromium
-- Memory safety bugs in the patched Blink/V8 surface
-- Sandbox escapes in the installed binary
+If an issue turns out to allow remote code execution or a sandbox escape in the
+installed binary, email **security@olib.ai** instead of filing publicly, and say
+clearly in the subject line that it concerns Owl Light. Those two categories are
+the only ones we treat as embargoed for this binary.
 
-Out of scope:
+## Not accepted for Owl Light
 
-- Issues in upstream Chromium that we haven't modified — please report those
-  to <https://chromiumbugs.com>
-- Detection of Owl Light by *behavioural* analysis (mouse trajectories, timing
-  patterns) — that's an automation-author concern, not a binary issue
-- The closed-source Enterprise build's binary fingerprint — handled under a
-  separate disclosure agreement with enterprise customers
+The following are expected characteristics of a free binary, not defects, and
+reports about them will be closed:
 
-## Bounty
+- Fingerprinting or detection of Owl Light by any means, including Web Audio,
+  canvas, WebGL, font enumeration, TLS or HTTP signatures, CDP artefacts, and
+  scores from third party detection sites. Owl Light makes no anti detection
+  guarantee. Undetectability is an Enterprise feature and it is not present
+  here.
+- Differences between Owl Light and genuine Chromium in any observable API
+  surface, including values that appear constant across profiles.
+- Anything inherited from upstream Chromium that we have not modified. Report
+  those to the Chromium project at <https://issues.chromium.org>.
+- Detection through behavioural analysis such as mouse trajectories, timing,
+  or interaction patterns. That is a property of the automation using the
+  browser, not of the browser.
+- Missing hardening, telemetry, or policy controls that the Enterprise build
+  provides.
 
-We do not currently run a paid bounty programme but will publicly credit
-researchers (with permission) in the release notes for the version that
-contains the fix.
+## Owl Browser Enterprise
+
+Enterprise security reports are handled under a separate disclosure agreement
+with enterprise customers. If you are an enterprise customer, use the contact in
+your agreement. Findings about the Enterprise binary that are submitted through
+this repository cannot be assessed, because the affected code is not published
+here.
+
+## Credit
+
+We do not run a paid bounty for Owl Light. For confirmed issues that we fix, we
+are glad to credit the reporter by name in the release notes, with permission.

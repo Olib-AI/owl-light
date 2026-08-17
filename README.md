@@ -231,9 +231,13 @@ others can find it.
   <img src="web/assets/owl-watching.svg" alt="" width="180" height="180"/>
 </div>
 
-Owl Light is the open distribution. **[Owl Browser Enterprise](https://www.owlbrowser.net)**
-is the full platform built around the same engine, for teams running
-automation at scale:
+Owl Light is the open distribution, free to use and supported on a best effort
+basis. It is a separate product from Enterprise and is not covered by the Owl
+Browser bug bounty programme. See [SECURITY.md](SECURITY.md) for what that
+means for security reports.
+
+**[Owl Browser Enterprise](https://www.owlbrowser.net)** is the full platform
+built around the same engine, for teams running automation at scale:
 
 | | Owl Light | **Owl Browser Enterprise** |
 |---|---|---|
