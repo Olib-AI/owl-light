@@ -65,7 +65,7 @@ already speak.
 
 | | Plain Chromium / Playwright | **Owl Light** |
 |---|---|---|
-| Fingerprint | Identical to every other Playwright user | 27 bundled VM profiles (Windows, macOS, Linux × Chrome 143-151), each with a fully self-consistent identity |
+| Fingerprint | Identical to every other Playwright user | 150 bundled VM profiles (Windows, macOS, Linux × Chrome 143-152), each with a fully self-consistent identity |
 | Detection by Cloudflare / DataDome / fingerprint.com | Frequently flagged as bot | Passes |
 | `navigator.webdriver` | `true` | `undefined` (and so is every other tell) |
 | GPU / canvas / WebGL | Real machine, leaks identity | Virtualized at the C++ source level |
@@ -78,10 +78,13 @@ already speak.
 
 Pre-built binaries for:
 
-- **macOS arm64**: Apple Silicon (`.app` bundle, ~165 MB compressed)
-- **Linux amd64**: Ubuntu 22.04+ (~198 MB compressed)
-- **Linux arm64**: Ubuntu 22.04+ (~193 MB compressed)
-- **Windows amd64**: Windows 10/11 (`.zip`, ~188 MB compressed)
+- **macOS arm64**: Apple Silicon (`.app` bundle, ~164 MB compressed, Developer ID signed and notarized)
+- **Linux amd64**: Ubuntu 22.04+ (~200 MB compressed)
+- **Linux arm64**: Ubuntu 22.04+ (~194 MB compressed)
+- **Windows amd64**: Windows 10/11 (`.zip`, ~190 MB compressed)
+
+All four platforms are built from the same engine revision, currently
+**CEF 152.0.5 / Chromium 152.0.7977.65**.
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
 or via the [installer script](#quick-start). The Linux tarballs are plain
@@ -157,22 +160,54 @@ asyncio.run(main())
 
 ## Profile selection
 
-Owl Light ships with **27 production-grade fingerprint profiles**:
-3 operating systems x 9 Chrome versions:
+Owl Light ships with **150 production-grade fingerprint profiles**:
+3 operating systems x 5 hardware builds x 10 Chrome versions.
 
 | `--owl-os=` | `--owl-chrome-version=` |
 |---|---|
-| `windows`, `macos`, `linux` | `143`, `144`, `145`, `146`, `147`, `148`, `149`, `150`, `151` |
+| `windows`, `macos`, `linux` | `143`, `144`, `145`, `146`, `147`, `148`, `149`, `150`, `151`, `152` |
 
 ```bash
 owl-light --remote-debugging-port=9222 --owl-os=linux --owl-chrome-version=145
 ```
 
+With no flags, Owl Light picks a profile at random across all 150. Pin one
+exactly with `--owl-profile-id=<1..150>`.
+
 Each profile is a fully self-consistent identity: UA, Sec-CH-UA-* hints,
-GPU/WebGL renderer, canvas/audio noise seed, font list, screen metrics, and
-timezone are all coherent for that OS/version combination.
+GPU/WebGL renderer, canvas/audio noise seed, font list, and screen metrics are
+all coherent for that OS, hardware, and version combination. The 5 hardware
+builds per OS mean two sessions on the same Chrome version can still present
+genuinely different GPUs and screen geometry.
+
+Timezone is deliberately **not** derived from the profile. See
+[Timezone](#timezone) below.
 
 See [docs/profiles.md](docs/profiles.md) for the full matrix.
+
+---
+
+## Timezone
+
+By default Owl Light reports **your host timezone**, exactly as stock Chrome
+does. It does not invent a timezone to match the profile, because Owl Light
+does no GeoIP lookup and a guessed zone would be wrong more often than right.
+
+If you send traffic through a proxy or VPN, set the zone to the exit country
+yourself:
+
+```bash
+owl-light --remote-debugging-port=9222 --owl-timezone=Europe/Berlin
+```
+
+A browser timezone that disagrees with the exit IP is one of the most widely
+deployed anti-fraud signals there is, so set this whenever the traffic leaves
+from somewhere other than your own machine. The value is any IANA zone id, for
+example `America/New_York`, `Europe/Berlin`, or `Asia/Tokyo`.
+
+`--owl-timezone` drives the whole stack, not just `Intl`: `Date`, the
+`Intl.DateTimeFormat` resolved options, and the ICU default zone all agree, so
+there is no offset mismatch to detect.
 
 ---
 
@@ -203,13 +238,17 @@ Owl-specific knobs are:
 
 | Flag | What it does |
 |---|---|
-| `--owl-os={windows\|macos\|linux}` | Pick the spoofed operating system |
-| `--owl-chrome-version={143..151}` | Pick the spoofed Chrome major version |
-| `--owl-vm-seed=<n>` | Force a specific VM profile (advanced) |
+| `--owl-os={windows\|macos\|linux}` | Filter profile selection by OS. Default: random across all 3 |
+| `--owl-chrome-version={143..152}` | Pin the reported Chrome major. Default: random across all 10 |
+| `--owl-timezone=<IANA zone>` | Timezone reported to the page. Default: your host timezone |
+| `--owl-profile-id={1..150}` | Pin one exact profile row, overriding the two flags above |
+| `--owl-seed=<uint64>` | Deterministic seed for canvas / audio / WebGL noise. Same seed, same fingerprint |
+| `--owl-help` | Print the Owl flag reference and exit |
 | `--remote-debugging-port=<n>` | Standard CDP port (default: pipe-only) |
 
-Defaults to `linux` + `chrome 147` if not specified. See
-[docs/flags.md](docs/flags.md) for the complete list.
+With no Owl flags at all, Owl Light picks a random profile and reports your
+host timezone. Run `owl-light --owl-help` for the authoritative list, or see
+[docs/flags.md](docs/flags.md).
 
 ---
 
@@ -243,7 +282,7 @@ built around the same engine, for teams running automation at scale:
 |---|---|---|
 | Stealth Chromium engine | ✓ | ✓ |
 | Platforms | macOS, Linux, Windows | macOS, Linux, Windows, Docker |
-| Fingerprint profiles | 27 bundled | 256 unique per instance, custom matrices |
+| Fingerprint profiles | 150 bundled | 256 unique per instance, custom matrices |
 | Multi-context isolation | ✗ | 256 isolated browser contexts per process |
 | Tor integration | ✗ | Built-in, per-context circuits |
 | Built-in proxy / residential routing | ✗ | ✓ |
