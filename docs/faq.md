@@ -84,7 +84,7 @@ It overwrites the install in place.
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 
 Owl Light is the open distribution of the stealth Chromium engine — one
-binary, drop-in CDP, 27 bundled fingerprint profiles. Owl Browser
+binary, drop-in CDP, 150 bundled fingerprint profiles. Owl Browser
 Enterprise adds the full automation platform on top: 256 isolated browser
 contexts per process, Tor integration, residential proxy management,
 175+ automation tools (REST + WebSocket + MCP), an on-device vision LLM

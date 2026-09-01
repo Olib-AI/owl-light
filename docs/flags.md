@@ -1,6 +1,6 @@
 # Flags reference
 
-Owl Light is a Chromium fork — every standard Chromium command-line flag
+Owl Light is a Chromium fork, so every standard Chromium command-line flag
 works. The Owl-specific knobs are listed first; everything else is the
 upstream Chromium catalogue (`--headless=new`, `--no-sandbox`,
 `--proxy-server=...`, `--user-data-dir=...`, `--disable-dev-shm-usage`, …).
@@ -9,10 +9,15 @@ upstream Chromium catalogue (`--headless=new`, `--no-sandbox`,
 
 | Flag | Default | What it does |
 |---|---|---|
-| `--owl-os={windows\|macos\|linux}` | `linux` | Pick the spoofed operating system. Drives navigator.platform, navigator.userAgent, Sec-CH-UA-Platform, font list, screen DPI, and a dozen other coherent invariants. |
-| `--owl-chrome-version={143..151}` | `147` | Pick the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
-| `--owl-vm-seed=<u64>` | (random per run) | Force a specific VM profile by seed. Use this when you need *the same* identity across runs (regression testing, account binding). |
-| `--owl-gpu-profile=<n>` | (auto from `--owl-os`) | Override the GPU virtualization slot. 0 = Intel UHD, 1 = NVIDIA, 2 = AMD, 3 = Apple M-series, 4 = Qualcomm Adreno. |
+| `--owl-os={windows\|macos\|linux}` | random across all 3 | Filter profile selection by operating system. Drives navigator.platform, navigator.userAgent, Sec-CH-UA-Platform, font list, screen DPI, and a dozen other coherent invariants. |
+| `--owl-chrome-version={143..152}` | random across all 10 | Pin the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
+| `--owl-profile-id={1..150}` | (none) | Pin one exact profile row, overriding `--owl-os` and `--owl-chrome-version`. Use this when you need *the same* identity across runs (regression testing, account binding). Ids are append-only across releases. |
+| `--owl-timezone=<IANA zone>` | the host timezone | Timezone reported to the page, for example `Europe/Berlin`. Sets the ICU default zone, so `Date`, `Intl` and the computed offset all agree. Set this to your proxy's exit country. |
+| `--owl-seed=<u64>` | (random per run) | Deterministic seed for per-context noise (canvas, audio, WebGL hashing). The same seed produces the same noise. |
+| `--owl-help` | | Print the Owl flag reference and exit. |
+
+Run `owl-light --owl-help` for the authoritative list as built into your
+binary.
 
 ## Common Chromium flags you'll actually use
 
@@ -50,18 +55,20 @@ A reproducible session bound to a specific identity:
 ```bash
 owl-light \
   --remote-debugging-port=9222 \
-  --owl-os=windows \
-  --owl-chrome-version=146 \
-  --owl-vm-seed=4242424242424242
+  --owl-profile-id=42 \
+  --owl-seed=4242424242424242
 ```
 
-Through a residential proxy with a Linux identity:
+Through a residential proxy with a Linux identity. Set the timezone to the
+proxy's exit country: a browser timezone that disagrees with the exit IP is
+one of the most widely deployed anti-fraud signals there is.
 
 ```bash
 owl-light \
   --remote-debugging-port=9222 \
   --owl-os=linux \
   --owl-chrome-version=147 \
+  --owl-timezone=Europe/Berlin \
   --proxy-server=http://user:pass@proxy.example.com:8080
 ```
 

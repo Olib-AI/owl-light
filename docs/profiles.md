@@ -1,60 +1,76 @@
 # Fingerprint profiles
 
-Owl Light ships with **27 production-grade profiles** — 3 operating systems
-× 7 Chrome major versions. Each profile is a fully self-consistent
-identity: navigator object, Client Hints (`Sec-CH-UA-*`), Accept-Language,
-platform, GPU/WebGL renderer, canvas/audio noise seed, font list, screen
-metrics, devicePixelRatio, hardwareConcurrency, deviceMemory, and timezone
+Owl Light ships with **150 production-grade profiles**: 3 operating systems
+x 5 hardware builds x 10 Chrome major versions. Each profile is a fully
+self-consistent identity: navigator object, Client Hints (`Sec-CH-UA-*`),
+Accept-Language, platform, GPU/WebGL renderer, canvas/audio noise seed, font
+list, screen metrics, devicePixelRatio, hardwareConcurrency and deviceMemory
 all match what a real machine of that build would produce.
+
+Timezone is deliberately not part of the profile. Owl Light reports the host
+timezone unless you set `--owl-timezone`. See [Timezone](#timezone) below.
 
 ## Matrix
 
-| `--owl-os=` | `--owl-chrome-version=` | UA platform | Default GPU |
+| `--owl-os=` | UA platform | Hardware builds | Chrome majors |
 |---|---|---|---|
-| `windows` | 143 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 144 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 145 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 146 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 147 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 148 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 149 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 150 | Windows 10/11 | Intel UHD / NVIDIA |
-| `windows` | 151 | Windows 10/11 | Intel UHD / NVIDIA |
-| `macos`   | 143 | macOS 14+ | Apple M-series |
-| `macos`   | 144 | macOS 14+ | Apple M-series |
-| `macos`   | 145 | macOS 14+ | Apple M-series |
-| `macos`   | 146 | macOS 14+ | Apple M-series |
-| `macos`   | 147 | macOS 14+ | Apple M-series |
-| `macos`   | 148 | macOS 14+ | Apple M-series |
-| `macos`   | 149 | macOS 14+ | Apple M-series |
-| `macos`   | 150 | macOS 14+ | Apple M-series |
-| `macos`   | 151 | macOS 14+ | Apple M-series |
-| `linux`   | 143 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 144 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 145 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 146 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 147 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 148 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 149 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 150 | Linux x86_64 | Intel UHD / NVIDIA |
-| `linux`   | 151 | Linux x86_64 | Intel UHD / NVIDIA |
+| `windows` | Windows 10/11 (`Win32`) | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 152 |
+| `macos` | macOS 14+ (`MacIntel`) | 5 per OS, Apple M-series | 143 to 152 |
+| `linux` | Linux x86_64 | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 152 |
 
-The matrix is bundled into the binary itself (encrypted SQLCipher DB) — no
+3 operating systems x 5 hardware builds x 10 Chrome majors = **150 profiles**,
+addressable individually as `--owl-profile-id=1..150`.
+
+The 5 hardware builds per operating system are what make two sessions on the
+same Chrome version genuinely different: they carry distinct GPU and WebGL
+renderer strings, screen geometry, devicePixelRatio, hardwareConcurrency and
+deviceMemory, not just a different noise seed.
+
+The matrix is bundled into the binary itself (encrypted SQLCipher DB): no
 network calls, no profile downloads, no telemetry.
 
 ## Pinning a profile
 
-By default Owl Light picks one of the 27 profiles at random per process
-launch. To pin to the same profile across runs:
+By default Owl Light picks one of the 150 profiles at random per process
+launch. To pin the exact same identity across runs, address it by id:
 
 ```bash
 # always use the same identity
-owl-light --owl-os=macos --owl-chrome-version=147 --owl-vm-seed=4242424242424242
+owl-light --owl-profile-id=42
 ```
 
-The seed maps deterministically to a single profile. Two runs with the same
-`--owl-os`, `--owl-chrome-version`, and `--owl-vm-seed` produce identical
-fingerprints.
+`--owl-profile-id` overrides `--owl-os` and `--owl-chrome-version`. Ids are
+append-only across releases, so a pinned id keeps selecting the same VM after
+an upgrade: ids 1 to 27 are byte-identical to the v0.3.0 roster.
+
+To narrow the random pick instead of pinning it, combine the filters:
+
+```bash
+owl-light --owl-os=macos --owl-chrome-version=147
+```
+
+For a reproducible per-context noise pattern (canvas, audio, WebGL hashing),
+add `--owl-seed=<uint64>`. The same seed produces the same noise.
+
+## Timezone
+
+Owl Light reports **your host timezone** by default, exactly as stock Chrome
+does. It does not derive a zone from the profile, because there is no GeoIP
+lookup and a guessed zone would be wrong more often than right.
+
+Set it explicitly when your traffic exits somewhere else:
+
+```bash
+owl-light --owl-timezone=Europe/Berlin
+```
+
+A browser timezone that disagrees with the exit IP is one of the most widely
+deployed anti-fraud signals there is, so set this whenever you use a proxy or
+VPN. The value is any IANA zone id.
+
+This sets the ICU default zone rather than patching JavaScript, so `Date`,
+`Intl.DateTimeFormat().resolvedOptions()` and the computed offset all agree,
+including across DST boundaries.
 
 ## What's spoofed
 
@@ -80,9 +96,10 @@ level:
   `screen.availHeight`, `devicePixelRatio`, `screen.colorDepth`,
   `screen.orientation`
 - Timezone: `Intl.DateTimeFormat().resolvedOptions().timeZone`,
-  `Date.prototype.getTimezoneOffset()` — coherent with the spoofed locale
+  `Date.prototype.getTimezoneOffset()` and the computed UTC offset, all driven
+  from the ICU default zone. Host zone by default, `--owl-timezone` to set it
 - WebRTC: ICE candidate suppression for the host's real IP
-- And more — see [www.owlbrowser.net/docs](https://www.owlbrowser.net) for
+- And more. See [www.owlbrowser.net/docs](https://www.owlbrowser.net) for
   the full surface.
 
 ## Why "at the C++ source level"?
@@ -100,13 +117,13 @@ runtime. That works for shallow checks but leaks badly:
   worlds) miss the patches entirely.
 
 Owl Light spoofs at the Blink/V8 source level, so the spoofed values
-*are* the values — there's no patching layer to detect. They behave
+*are* the values, so there is no patching layer to detect. They behave
 identically to a real browser's properties under introspection,
 serialization, and enumeration.
 
 ## Need more profiles?
 
-Owl Light's 27 bundled profiles are the public set. Owl Browser
+Owl Light's 150 bundled profiles are the public set. Owl Browser
 **Enterprise** ships **256 unique profiles per instance** plus a profile
 generator that synthesizes new identities from any Chrome major you point
-it at — see [Enterprise](enterprise.md).
+it at. See [Enterprise](enterprise.md).
