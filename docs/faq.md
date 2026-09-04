@@ -2,7 +2,7 @@
 
 ### Is Owl Light a fork of Chromium?
 
-Yes — Owl Light is built from a custom Chromium tree with ~50 patches
+Yes. Owl Light is built from a custom Chromium tree with ~50 patches
 applied on top of the upstream source. The patches add fingerprint
 virtualization at the source level (canvas, WebGL, audio, navigator,
 client hints, fonts, etc.) and a small CDP-domain extension. The Chromium
@@ -23,7 +23,7 @@ APIs at runtime. That has three problems:
    worlds, and out-of-process iframes don't get the patches.
 
 Owl Light spoofs at the C++ Blink/V8 layer. The spoofed values *are* the
-values — there's no patching layer to detect, and the spoofs apply
+values, so there is no patching layer to detect, and the spoofs apply
 uniformly across every execution context the renderer creates.
 
 ### Does it work with Selenium / WebDriver?
@@ -33,20 +33,46 @@ Use Selenium 4's CDP support, or migrate to Playwright/Puppeteer.
 
 ### Does this work with Playwright's `chromium.launch()`?
 
-Yes. You can either:
+Not yet. Use CDP mode instead: start Owl Light yourself and connect to it.
 
-- **CDP mode** — start Owl Light yourself and use
-  `chromium.connect_over_cdp("http://localhost:9222")`.
-- **Launch mode** — `chromium.launch(executable_path="/path/to/owl_light")`.
-  Playwright will spawn the binary itself.
+```bash
+owl-light --headless=new --remote-debugging-port=9222 --user-data-dir=/tmp/owl
+```
 
-CDP mode is recommended for production: it lets one Owl Light instance
+```python
+browser = playwright.chromium.connect_over_cdp("http://localhost:9222")
+```
+
+```js
+const browser = await puppeteer.connect({ browserURL: "http://localhost:9222" });
+```
+
+`chromium.launch(executable_path=...)` and `puppeteer.launch()` fail with
+`Cannot read properties of undefined (reading '_page')`. Both create a browser
+context and then a page inside it, but Owl Light creates every page in its
+default context regardless of the `browserContextId` requested, so the client
+never matches the page to the context it asked for. CDP mode avoids this
+because it adopts the existing default context instead of creating one.
+
+CDP mode is also the better choice for production: one Owl Light instance can
 serve many test runs.
+
+### A client connects but the handshake never finishes
+
+Check that only one instance holds the port:
+
+```bash
+lsof -nP -iTCP:9222 -sTCP:LISTEN
+```
+
+Two listeners, typically a stale process on IPv4 and a newer one on IPv6, give
+exactly that symptom: `/json/version` answers from one process while the client
+hangs against the other.
 
 ### Is the binary signed / notarized on macOS?
 
 Yes. The macOS arm64 build is signed with a **Developer ID Application**
-certificate (Olib AI LLC), **notarized by Apple, and stapled** — so it
+certificate (Olib AI LLC), **notarized by Apple, and stapled**, so it
 launches without a Gatekeeper prompt and works offline. Verify it yourself:
 
 ```bash
@@ -83,7 +109,7 @@ It overwrites the install in place.
 
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 
-Owl Light is the open distribution of the stealth Chromium engine — one
+Owl Light is the open distribution of the stealth Chromium engine, one
 binary, drop-in CDP, 150 bundled fingerprint profiles. Owl Browser
 Enterprise adds the full automation platform on top: 256 isolated browser
 contexts per process, Tor integration, residential proxy management,

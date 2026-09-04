@@ -30,7 +30,9 @@ from the same Blink code paths as real ones, so JavaScript introspection,
 
 It speaks vanilla CDP. Your existing `connect_over_cdp(...)` /
 `puppeteer.connect({ browserURL })` code keeps working. Point it at
-`http://localhost:9222` and you're done.
+`http://localhost:9222` and you're done. Connect to a running instance rather
+than letting the client spawn one: `chromium.launch()` and `puppeteer.launch()`
+are not supported yet (see the FAQ).
 
 ```bash
 # 1. download for your platform
