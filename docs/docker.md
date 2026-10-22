@@ -12,7 +12,7 @@ This page shows the minimal Dockerfile that wraps the official tarball.
 # syntax=docker/dockerfile:1
 FROM ubuntu:22.04 AS runtime
 
-ARG OWL_LIGHT_VERSION=v0.3.0
+ARG OWL_LIGHT_VERSION=v0.5.0
 ARG TARGETARCH      # amd64 | arm64 (set automatically by buildx)
 
 # CEF runtime deps + tini for clean PID 1
@@ -22,6 +22,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libdrm2 libgbm1 libxkbcommon0 libxcomposite1 libxdamage1 \
       libxfixes3 libxrandr2 libxshmfence1 libasound2 libpango-1.0-0 \
       libcairo2 libdbus-1-3 fonts-liberation \
+      # libxtst6 is a hard dependency of the engine; libx11-xcb1 is
+      # required from Chromium 156 on, even in headless mode.
+      libxtst6 libx11-xcb1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Pull the published tarball matching the build platform
@@ -45,15 +48,15 @@ Build it:
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --build-arg OWL_LIGHT_VERSION=v0.3.0 \
-  -t my-org/owl-light:v0.3.0 \
+  --build-arg OWL_LIGHT_VERSION=v0.5.0 \
+  -t my-org/owl-light:v0.5.0 \
   --push .
 ```
 
 Run it:
 
 ```bash
-docker run --rm -p 9222:9222 my-org/owl-light:v0.3.0 \
+docker run --rm -p 9222:9222 my-org/owl-light:v0.5.0 \
   --owl-os=macos --owl-chrome-version=147
 ```
 
@@ -80,7 +83,7 @@ exits. To keep them, mount a volume:
 ```bash
 docker run --rm -p 9222:9222 \
   -v owl-light-data:/data \
-  my-org/owl-light:v0.3.0 \
+  my-org/owl-light:v0.5.0 \
   --user-data-dir=/data \
   --owl-os=macos --owl-chrome-version=147
 ```

@@ -6,7 +6,7 @@ for four targets:
 
 | Archive | Platform |
 |---|---|
-| `owl_light-macos-arm64.tar.gz` | macOS 12+ on Apple Silicon (M1/M2/M3/M4) |
+| `owl_light-macos-arm64.tar.gz` | macOS 13+ on Apple Silicon (M1/M2/M3/M4) |
 | `owl_light-linux-amd64.tar.gz` | Ubuntu 22.04+ / Debian 12+ on x86_64 |
 | `owl_light-linux-arm64.tar.gz` | Ubuntu 22.04+ / Debian 12+ on aarch64 |
 | `owl_light-windows-amd64.zip`  | Windows 10/11 on x86_64 |
@@ -36,7 +36,7 @@ What it does:
 Pin to a version:
 
 ```bash
-OWL_LIGHT_VERSION=v0.3.0 curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
+OWL_LIGHT_VERSION=v0.5.0 curl -fsSL https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.sh | sh
 ```
 
 Customize the install location:
@@ -60,7 +60,7 @@ needed; the script prints how to add the bin dir to your user `PATH`.
 Pin a version or change the install dir:
 
 ```powershell
-$env:OWL_LIGHT_VERSION = 'v0.3.0'
+$env:OWL_LIGHT_VERSION = 'v0.5.0'
 $env:OWL_LIGHT_HOME    = 'C:\Tools\OwlLight'
 iwr -useb https://raw.githubusercontent.com/Olib-AI/owl-light/main/scripts/install.ps1 | iex
 ```
@@ -78,6 +78,17 @@ mkdir -p ~/owl-light && tar -xzf owl_light-linux-amd64.tar.gz -C ~/owl-light
 
 # run
 ~/owl-light/linux-amd64/owl_light --remote-debugging-port=9222
+```
+
+A desktop Ubuntu install already has the system libraries Chromium needs. On a
+minimal or server image, install them first (the same list the container
+recipe uses):
+
+```bash
+sudo apt-get install -y --no-install-recommends \
+  libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgbm1 \
+  libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libxshmfence1 \
+  libxtst6 libx11-xcb1 libasound2 libpango-1.0-0 libcairo2 libdbus-1-3
 ```
 
 ### macOS
@@ -103,6 +114,10 @@ cd C:\Tools\OwlLight
 `owl_light.exe` is portable — keep it in the same folder as `libcef.dll`
 and the rest of the runtime files. No installer, no admin rights, no
 service registration.
+
+On every platform, leave the extracted files as they are: Owl Light checks
+them at startup and refuses to run if one was modified, replaced or removed.
+Adding your own files next to them is fine.
 
 ---
 

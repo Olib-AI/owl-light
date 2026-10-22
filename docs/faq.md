@@ -2,7 +2,7 @@
 
 ### Is Owl Light a fork of Chromium?
 
-Yes. Owl Light is built from a custom Chromium tree with ~50 patches
+Yes. Owl Light is built from a custom Chromium tree with ~65 patches
 applied on top of the upstream source. The patches add fingerprint
 virtualization at the source level (canvas, WebGL, audio, navigator,
 client hints, fonts, etc.) and a small CDP-domain extension. The Chromium
@@ -93,9 +93,28 @@ SmartScreen may warn on first run.
 
 ### Is there a Windows build?
 
-Owl Light publishes macOS (arm64) and Linux (amd64 + arm64) only. Windows
-support is part of [Owl Browser Enterprise](enterprise.md). Open an issue
-if you need it on Owl Light specifically.
+Yes. `owl_light-windows-amd64.zip` is published with every release since
+v0.2.0. It is a portable folder: run `owl_light.exe` from where you extracted
+it, no installer or admin rights needed.
+
+### Owl Light exits with "payload integrity"
+
+Owl Light verifies its own files every time it starts. If a library or
+resource it shipped with was modified, replaced or deleted, it refuses to run
+and tells you which file:
+
+```
+error: payload integrity: libcef.so: size changed
+```
+
+| Exit code | Meaning |
+|---|---|
+| `6` | A shipped file is missing or was changed; detected before startup |
+| `70` | A shipped file was found to be changed shortly after startup |
+
+Re-extract the release archive (or re-run the installer) to fix it. Files you
+add next to the binary are ignored; only the files Owl Light shipped with are
+checked.
 
 ### How do I update?
 
@@ -110,7 +129,7 @@ It overwrites the install in place.
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 
 Owl Light is the open distribution of the stealth Chromium engine, one
-binary, drop-in CDP, 150 bundled fingerprint profiles. Owl Browser
+binary, drop-in CDP, 210 bundled fingerprint profiles. Owl Browser
 Enterprise adds the full automation platform on top: 256 isolated browser
 contexts per process, Tor integration, residential proxy management,
 175+ automation tools (REST + WebSocket + MCP), an on-device vision LLM
@@ -128,9 +147,10 @@ code drives.
 
 | Platform | Compressed | Uncompressed |
 |---|---|---|
-| macOS arm64  | ~165 MB | ~750 MB |
-| Linux amd64  | ~198 MB | ~770 MB |
-| Linux arm64  | ~193 MB | ~810 MB |
+| macOS arm64   | ~177 MB | ~370 MB |
+| Linux amd64   | ~207 MB | ~485 MB |
+| Linux arm64   | ~202 MB | ~480 MB |
+| Windows amd64 | ~196 MB | ~420 MB |
 
 Most of the size is CEF / Chromium itself (libcef.so + V8 snapshot +
 Resources/) plus a small bundle of OSS fonts.
