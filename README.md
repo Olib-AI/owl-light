@@ -67,7 +67,7 @@ already speak.
 
 | | Plain Chromium / Playwright | **Owl Light** |
 |---|---|---|
-| Fingerprint | Identical to every other Playwright user | 210 bundled VM profiles (Windows, macOS, Linux × Chrome 143-156), each with a fully self-consistent identity |
+| Fingerprint | Identical to every other Playwright user | 240 bundled VM profiles (Windows, macOS, Linux × Chrome 143-158), each with a fully self-consistent identity |
 | Detection by Cloudflare / DataDome / fingerprint.com | Frequently flagged as bot | Passes |
 | `navigator.webdriver` | `true` | `undefined` (and so is every other tell) |
 | GPU / canvas / WebGL | Real machine, leaks identity | Virtualized at the C++ source level |
@@ -80,13 +80,13 @@ already speak.
 
 Pre-built binaries for:
 
-- **macOS arm64**: Apple Silicon, macOS 13+ (`.app` bundle, ~177 MB compressed, Developer ID signed and notarized)
-- **Linux amd64**: Ubuntu 22.04+ (~207 MB compressed)
-- **Linux arm64**: Ubuntu 22.04+ (~202 MB compressed)
-- **Windows amd64**: Windows 10/11 (`.zip`, ~196 MB compressed)
+- **macOS arm64**: Apple Silicon, macOS 13+ (`.app` bundle, ~174 MB compressed, Developer ID signed and notarized)
+- **Linux amd64**: Ubuntu 22.04+ (~214 MB compressed)
+- **Linux arm64**: Ubuntu 22.04+ (~207 MB compressed)
+- **Windows amd64**: Windows 10/11 (`.zip`, ~201 MB compressed)
 
 All four platforms are built from the same engine revision, currently
-**CEF 156 / Chromium 156.0.8078.17**.
+**CEF 158 / Chromium 158.0.8127.18**.
 
 Get them from [GitHub Releases](https://github.com/Olib-AI/owl-light/releases/latest)
 or via the [installer script](#quick-start). The Linux tarballs are plain
@@ -166,19 +166,19 @@ asyncio.run(main())
 
 ## Profile selection
 
-Owl Light ships with **210 production-grade fingerprint profiles**:
-3 operating systems x 5 hardware builds x 14 Chrome versions.
+Owl Light ships with **240 production-grade fingerprint profiles**:
+3 operating systems x 5 hardware builds x 16 Chrome versions.
 
 | `--owl-os=` | `--owl-chrome-version=` |
 |---|---|
-| `windows`, `macos`, `linux` | `143` through `156` |
+| `windows`, `macos`, `linux` | `143` through `158` |
 
 ```bash
 owl-light --remote-debugging-port=9222 --owl-os=linux --owl-chrome-version=145
 ```
 
-With no flags, Owl Light picks a profile at random across all 210. Pin one
-exactly with `--owl-profile-id=<1..210>`.
+With no flags, Owl Light picks a profile at random across all 240. Pin one
+exactly with `--owl-profile-id=<1..240>`.
 
 Each profile is a fully self-consistent identity: UA, Sec-CH-UA-* hints,
 GPU/WebGL renderer, canvas/audio noise seed, font list, and screen metrics are
@@ -245,9 +245,9 @@ Owl-specific knobs are:
 | Flag | What it does |
 |---|---|
 | `--owl-os={windows\|macos\|linux}` | Filter profile selection by OS. Default: random across all 3 |
-| `--owl-chrome-version={143..156}` | Pin the reported Chrome major. Default: random across all 14 |
+| `--owl-chrome-version={143..158}` | Pin the reported Chrome major. Default: random across all 16 |
 | `--owl-timezone=<IANA zone>` | Timezone reported to the page. Default: your host timezone |
-| `--owl-profile-id={1..210}` | Pin one exact profile row, overriding the two flags above |
+| `--owl-profile-id={1..240}` | Pin one exact profile row, overriding the two flags above |
 | `--owl-seed=<uint64>` | Deterministic seed for canvas / audio / WebGL noise. Same seed, same fingerprint |
 | `--owl-help` | Print the Owl flag reference and exit |
 | `--remote-debugging-port=<n>` | Standard CDP port (default: pipe-only) |
@@ -288,7 +288,7 @@ built around the same engine, for teams running automation at scale:
 |---|---|---|
 | Stealth Chromium engine | ✓ | ✓ |
 | Platforms | macOS, Linux, Windows | macOS, Linux, Windows, Docker |
-| Fingerprint profiles | 210 bundled | 256 unique per instance, custom matrices |
+| Fingerprint profiles | 240 bundled | 256 unique per instance, custom matrices |
 | Multi-context isolation | ✗ | 256 isolated browser contexts per process |
 | Tor integration | ✗ | Built-in, per-context circuits |
 | Built-in proxy / residential routing | ✗ | ✓ |

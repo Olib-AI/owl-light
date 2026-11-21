@@ -129,7 +129,7 @@ It overwrites the install in place.
 ### What's the difference between Owl Light and Owl Browser Enterprise?
 
 Owl Light is the open distribution of the stealth Chromium engine, one
-binary, drop-in CDP, 210 bundled fingerprint profiles. Owl Browser
+binary, drop-in CDP, 240 bundled fingerprint profiles. Owl Browser
 Enterprise adds the full automation platform on top: 256 isolated browser
 contexts per process, Tor integration, residential proxy management,
 175+ automation tools (REST + WebSocket + MCP), an on-device vision LLM
@@ -147,10 +147,10 @@ code drives.
 
 | Platform | Compressed | Uncompressed |
 |---|---|---|
-| macOS arm64   | ~177 MB | ~370 MB |
-| Linux amd64   | ~207 MB | ~485 MB |
-| Linux arm64   | ~202 MB | ~480 MB |
-| Windows amd64 | ~196 MB | ~420 MB |
+| macOS arm64   | ~174 MB | ~381 MB |
+| Linux amd64   | ~214 MB | ~498 MB |
+| Linux arm64   | ~207 MB | ~492 MB |
+| Windows amd64 | ~201 MB | ~444 MB |
 
 Most of the size is CEF / Chromium itself (libcef.so + V8 snapshot +
 Resources/) plus a small bundle of OSS fonts.

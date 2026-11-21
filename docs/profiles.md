@@ -1,7 +1,7 @@
 # Fingerprint profiles
 
-Owl Light ships with **210 production-grade profiles**: 3 operating systems
-x 5 hardware builds x 14 Chrome major versions. Each profile is a fully
+Owl Light ships with **240 production-grade profiles**: 3 operating systems
+x 5 hardware builds x 16 Chrome major versions. Each profile is a fully
 self-consistent identity: navigator object, Client Hints (`Sec-CH-UA-*`),
 Accept-Language, platform, GPU/WebGL renderer, canvas/audio noise seed, font
 list, screen metrics, devicePixelRatio, hardwareConcurrency and deviceMemory
@@ -14,12 +14,12 @@ timezone unless you set `--owl-timezone`. See [Timezone](#timezone) below.
 
 | `--owl-os=` | UA platform | Hardware builds | Chrome majors |
 |---|---|---|---|
-| `windows` | Windows 10/11 (`Win32`) | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 156 |
-| `macos` | macOS 14+ (`MacIntel`) | 5 per OS, Apple M-series | 143 to 156 |
-| `linux` | Linux x86_64 | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 156 |
+| `windows` | Windows 10/11 (`Win32`) | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 158 |
+| `macos` | macOS 14+ (`MacIntel`) | 5 per OS, Apple M-series | 143 to 158 |
+| `linux` | Linux x86_64 | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 158 |
 
-3 operating systems x 5 hardware builds x 14 Chrome majors = **210 profiles**,
-addressable individually as `--owl-profile-id=1..210`.
+3 operating systems x 5 hardware builds x 16 Chrome majors = **240 profiles**,
+addressable individually as `--owl-profile-id=1..240`.
 
 The 5 hardware builds per operating system are what make two sessions on the
 same Chrome version genuinely different: they carry distinct GPU and WebGL
@@ -31,7 +31,7 @@ network calls, no profile downloads, no telemetry.
 
 ## Pinning a profile
 
-By default Owl Light picks one of the 210 profiles at random per process
+By default Owl Light picks one of the 240 profiles at random per process
 launch. To pin the exact same identity across runs, address it by id:
 
 ```bash
@@ -41,9 +41,11 @@ owl-light --owl-profile-id=42
 
 `--owl-profile-id` overrides `--owl-os` and `--owl-chrome-version`. Ids are
 append-only across releases, so a pinned id keeps selecting the same VM after
-an upgrade: ids 1 to 150 select the same VMs as in v0.4.x, and ids 151 to
-210 are the Chrome 153 to 156 additions. An id outside the bundled roster is
-rejected at startup with an error naming the flag.
+an upgrade: ids 1 to 150 select the same VMs as in v0.4.x, ids 151 to 210
+the same as in v0.5.x, and ids 211 to 240 are the Chrome 157 and 158
+additions (211 to 225 are Chrome 157, 226 to 240 are Chrome 158). An id
+outside the bundled roster is rejected at startup with an error naming the
+flag.
 
 To narrow the random pick instead of pinning it, combine the filters:
 
@@ -125,7 +127,7 @@ serialization, and enumeration.
 
 ## Need more profiles?
 
-Owl Light's 210 bundled profiles are the public set. Owl Browser
+Owl Light's 240 bundled profiles are the public set. Owl Browser
 **Enterprise** ships **256 unique profiles per instance** plus a profile
 generator that synthesizes new identities from any Chrome major you point
 it at. See [Enterprise](enterprise.md).

@@ -10,8 +10,8 @@ upstream Chromium catalogue (`--headless=new`, `--no-sandbox`,
 | Flag | Default | What it does |
 |---|---|---|
 | `--owl-os={windows\|macos\|linux}` | random across all 3 | Filter profile selection by operating system. Drives navigator.platform, navigator.userAgent, Sec-CH-UA-Platform, font list, screen DPI, and a dozen other coherent invariants. |
-| `--owl-chrome-version={143..156}` | random across all 14 | Pin the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
-| `--owl-profile-id={1..210}` | (none) | Pin one exact profile row, overriding `--owl-os` and `--owl-chrome-version`. Use this when you need *the same* identity across runs (regression testing, account binding). Ids are append-only across releases. |
+| `--owl-chrome-version={143..158}` | random across all 16 | Pin the spoofed Chrome major version. Drives the entire User-Agent stack and Sec-CH-UA-Full-Version-List. |
+| `--owl-profile-id={1..240}` | (none) | Pin one exact profile row, overriding `--owl-os` and `--owl-chrome-version`. Use this when you need *the same* identity across runs (regression testing, account binding). Ids are append-only across releases. |
 | `--owl-timezone=<IANA zone>` | the host timezone | Timezone reported to the page, for example `Europe/Berlin`. Sets the ICU default zone, so `Date`, `Intl` and the computed offset all agree. Set this to your proxy's exit country. |
 | `--owl-seed=<u64>` | (random per run) | Deterministic seed for per-context noise (canvas, audio, WebGL hashing). The same seed produces the same noise. |
 | `--owl-help` | | Print the Owl flag reference and exit. |
