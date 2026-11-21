@@ -14,9 +14,9 @@ timezone unless you set `--owl-timezone`. See [Timezone](#timezone) below.
 
 | `--owl-os=` | UA platform | Hardware builds | Chrome majors |
 |---|---|---|---|
-| `windows` | Windows 10/11 (`Win32`) | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 158 |
-| `macos` | macOS 14+ (`MacIntel`) | 5 per OS, Apple M-series | 143 to 158 |
-| `linux` | Linux x86_64 | 5 per OS, drawn from Intel Iris Xe / Arc, NVIDIA GeForce RTX, AMD Radeon RX | 143 to 158 |
+| `windows` | Windows 10/11 (`Win32`) | 5: NVIDIA RTX A2000, RTX A4000, RTX 5000 Ada Generation; AMD Radeon RX 6750 XT, RX 7700 XT | 143 to 158 |
+| `macos` | macOS 14+ (`MacIntel`) | 5: Apple M2, M2 Pro, M2 Max, M3 Pro, M4 Max | 143 to 158 |
+| `linux` | Linux x86_64 | 5: NVIDIA GeForce RTX 2060, RTX 4050 Laptop, RTX 4080 Laptop; AMD Radeon RX 6600 XT, RX 6700 XT | 143 to 158 |
 
 3 operating systems x 5 hardware builds x 16 Chrome majors = **240 profiles**,
 addressable individually as `--owl-profile-id=1..240`.
