@@ -147,7 +147,9 @@ including across DST boundaries.
 Owl Light bundles only open-source fonts: Liberation (metric-compatible with
 Arial, Times New Roman and Courier New), DejaVu and Noto, plus Carlito
 (Calibri metrics), Caladea (Cambria metrics) and Selawik (Segoe UI metrics)
-in the macOS and Windows packages. The proprietary Windows and macOS faces
+in every package. On a Linux host a Windows profile's Arial is Owl Win Sans,
+Liberation Sans with Arial's bounding box (OFL-licensed, renamed as the
+license requires), so text inputs size as on real Windows. The proprietary Windows and macOS faces
 cannot be redistributed, so a profile whose OS uses them gets these
 substitutes. Faces with no open-source equivalent (Consolas, Georgia,
 Verdana, Tahoma and others) are approximations: text set in them can measure
@@ -190,7 +192,9 @@ level:
 - Timezone: `Intl.DateTimeFormat().resolvedOptions().timeZone`,
   `Date.prototype.getTimezoneOffset()` and the computed UTC offset, all driven
   from the ICU default zone. Host zone by default, `--owl-timezone` to set it
-- WebRTC: ICE candidate suppression for the host's real IP
+- WebRTC: ICE candidate suppression for the host's real IP, and the
+  `disable_non_proxied_udp` IP handling policy, so WebRTC never sends UDP
+  around a configured proxy (without a proxy, no candidates are gathered)
 - And more. See [www.owlbrowser.net/docs](https://www.owlbrowser.net) for
   the full surface.
 

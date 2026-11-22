@@ -39,7 +39,8 @@ RUN curl -fsSL \
 USER owl
 EXPOSE 9222
 ENTRYPOINT ["/usr/bin/tini", "--", "/opt/owl-light/owl_light", \
-            "--no-sandbox", "--remote-debugging-port=9222", \
+            "--headless=new", "--no-sandbox", \
+            "--remote-debugging-port=9222", \
             "--remote-debugging-address=0.0.0.0"]
 ```
 
@@ -77,8 +78,10 @@ async with async_playwright() as p:
 ## Persistent user data
 
 Cookies, localStorage, IndexedDB live under whatever `--user-data-dir` you
-pass. Default is a tmpfs inside the container — gone when the container
-exits. To keep them, mount a volume:
+pass. Without one, each Owl Light process gets its own profile under
+`/tmp/owl_light_cache_root/instances/<id>/`, deleted when the process exits
+(set `OLIB_INSTANCE_ID=<name>` to keep a fixed, persistent one instead). To
+keep data across container restarts, mount a volume:
 
 ```bash
 docker run --rm -p 9222:9222 \
@@ -100,6 +103,9 @@ CEF spawns helper processes (renderer, GPU, network) — leave headroom
 above your page count.
 
 ## Sandbox
+
+`docker stop` shuts Owl Light down cleanly: it handles SIGTERM and SIGINT,
+closes its pages and exits within a few seconds, child processes included.
 
 The Dockerfile above passes `--no-sandbox` because the Chromium setuid
 sandbox needs `CAP_SYS_ADMIN`, which most container runtimes drop. If your

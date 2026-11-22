@@ -24,8 +24,8 @@ binary.
 | Flag | Effect |
 |---|---|
 | `--remote-debugging-port=<n>` | Expose CDP over HTTP on `<n>`. Required for `connect_over_cdp`. |
-| `--remote-debugging-address=0.0.0.0` | Bind CDP to all interfaces (Docker / containers). |
-| `--user-data-dir=<path>` | Where cookies, localStorage, etc. persist. Use a fresh dir per session. |
+| `--remote-debugging-address=<ip>` | Listen for CDP on `<ip>` instead of `127.0.0.1`, for example `0.0.0.0` in Docker. Needs `--remote-debugging-port`. Stock Chrome ignores this flag; Owl Light honours it. The default stays `127.0.0.1`. |
+| `--user-data-dir=<path>` | Where cookies, localStorage, etc. persist. Use a fresh dir per session. Without it, each process gets its own throwaway profile, deleted on exit. |
 | `--headless=new` | Modern Chromium headless mode. Owl Light defaults to this when no display is attached. |
 | `--no-sandbox` | Drop the seccomp sandbox. Needed inside containers and CI. |
 | `--disable-gpu` | Skip GPU rasterization. |
@@ -33,6 +33,13 @@ binary.
 | `--lang=en-US,en;q=0.9` | Override the Accept-Language header. |
 | `--window-size=1920,1080` | Initial viewport (overridden by Playwright's set_viewport_size). |
 | `--disable-dev-shm-usage` | Use `/tmp` instead of `/dev/shm` (smaller container default). |
+
+## Environment variables
+
+| Variable | Effect |
+|---|---|
+| `OLIB_INSTANCE_ID=<name>` | Name this process's instance. By default every process gets a unique id, so instances started together never share an identity or a profile; the default profile (no `--user-data-dir`) is then deleted on exit. With a fixed name the profile under `/tmp/owl_light_cache_root/instances/<name>/` persists. Two processes must not share a name. |
+| `OWL_LIGHT_LOG_FILE=<path>` | Log file. Default `/tmp/owl_light.log` (`%LOCALAPPDATA%\owl_light\owl_light.log` on Windows), shared and append-only, or `owl_light_<name>.log` when `OLIB_INSTANCE_ID` is set. |
 
 ## Examples
 
