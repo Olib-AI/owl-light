@@ -2,7 +2,7 @@
 
 ### Is Owl Light a fork of Chromium?
 
-Yes. Owl Light is built from a custom Chromium tree with ~65 patches
+Yes. Owl Light is built from a custom Chromium tree with more than 80 patches
 applied on top of the upstream source. The patches add fingerprint
 virtualization at the source level (canvas, WebGL, audio, navigator,
 client hints, fonts, etc.) and a small CDP-domain extension. The Chromium
@@ -147,13 +147,30 @@ code drives.
 
 | Platform | Compressed | Uncompressed |
 |---|---|---|
-| macOS arm64   | ~174 MB | ~381 MB |
+| macOS arm64   | ~174 MB | ~382 MB |
 | Linux amd64   | ~214 MB | ~498 MB |
 | Linux arm64   | ~207 MB | ~492 MB |
-| Windows amd64 | ~201 MB | ~444 MB |
+| Windows amd64 | ~201 MB | ~428 MB |
 
 Most of the size is CEF / Chromium itself (libcef.so + V8 snapshot +
 Resources/) plus a small bundle of OSS fonts.
+
+### `getUserMedia()` never resolves
+
+That is what real Chrome does while its permission prompt is unanswered, and
+Owl Light never answers it. The device list comes from the profile's
+hardware (laptops have a camera and microphone, desktops do not), so a
+request for a device the profile lacks rejects with `NotFoundError` instead.
+See [Camera, microphone and speakers](profiles.md#camera-microphone-and-speakers).
+To make capture requests succeed, start Owl Light with
+`--use-fake-ui-for-media-stream`.
+
+### `navigator.gpu.requestAdapter()` returns `null`
+
+For Linux profiles that is correct: real Chrome 158 on Linux has no WebGPU
+adapter. Windows and macOS profiles report an adapter only for GPUs with
+published WebGPU data, and only when the host itself has a usable adapter.
+See [WebGPU](profiles.md#webgpu).
 
 ### Where do I report bugs?
 

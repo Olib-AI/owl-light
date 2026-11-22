@@ -181,7 +181,7 @@ With no flags, Owl Light picks a profile at random across all 240. Pin one
 exactly with `--owl-profile-id=<1..240>`.
 
 Each profile is a fully self-consistent identity: UA, Sec-CH-UA-* hints,
-GPU/WebGL renderer, canvas/audio noise seed, font list, and screen metrics are
+GPU/WebGL renderer, canvas noise seed, audio fingerprint, font list, and screen metrics are
 all coherent for that OS, hardware, and version combination. The 5 hardware
 builds per OS mean two sessions on the same Chrome version can still present
 genuinely different GPUs and screen geometry.
@@ -248,7 +248,7 @@ Owl-specific knobs are:
 | `--owl-chrome-version={143..158}` | Pin the reported Chrome major. Default: random across all 16 |
 | `--owl-timezone=<IANA zone>` | Timezone reported to the page. Default: your host timezone |
 | `--owl-profile-id={1..240}` | Pin one exact profile row, overriding the two flags above |
-| `--owl-seed=<uint64>` | Deterministic seed for canvas / audio / WebGL noise. Same seed, same fingerprint |
+| `--owl-seed=<uint64>` | Deterministic seed for canvas / WebGL noise. Same seed, same fingerprint |
 | `--owl-help` | Print the Owl flag reference and exit |
 | `--remote-debugging-port=<n>` | Standard CDP port (default: pipe-only) |
 
