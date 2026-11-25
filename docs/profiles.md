@@ -149,7 +149,10 @@ Arial, Times New Roman and Courier New), DejaVu and Noto, plus Carlito
 (Calibri metrics), Caladea (Cambria metrics) and Selawik (Segoe UI metrics)
 in every package. On a Linux host a Windows profile's Arial is Owl Win Sans,
 Liberation Sans with Arial's bounding box (OFL-licensed, renamed as the
-license requires), so text inputs size as on real Windows. The proprietary Windows and macOS faces
+license requires), so text inputs size as on real Windows. On a Linux host a
+macOS profile's emoji are Owl Color Emoji, Noto Color Emoji scaled to Apple
+Color Emoji's 1 em advance and line metrics (OFL-licensed, renamed), so emoji
+measure as on a real Mac. The proprietary Windows and macOS faces
 cannot be redistributed, so a profile whose OS uses them gets these
 substitutes. Faces with no open-source equivalent (Consolas, Georgia,
 Verdana, Tahoma and others) are approximations: text set in them can measure
